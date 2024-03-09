@@ -1,0 +1,40 @@
+@font-face {
+  font-family: Work Sans;
+  src: url('WorkSans-VariableFont_wght.ttf');
+}
+
+.workSans{
+  font-family: Work Sans;
+}
+
+.coolBeans {
+  overflow: hidden;
+  padding: 1rem 2rem;
+  position: relative;
+  transition: 0.1s transform ease-in-out;
+  will-change: transform;
+  z-index: 0;
+}
+
+.coolBeans::after {
+  /* background-color: ; */
+  content: '';
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-100%, 0) rotate(10deg);
+  transform-origin: top left;
+  transition: 0.1s transform ease-out;
+  will-change: transform;
+  z-index: -1;
+}
+
+.coolBeans:hover::after {
+  transform: translate(0, 0);
+}
+
+.coolBeans:hover {
+  will-change: transform;
+}
