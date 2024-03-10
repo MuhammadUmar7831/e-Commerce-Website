@@ -7,6 +7,7 @@
   font-family: Work Sans;
 }
 
+/*.coolBeans is for search bar Go*/
 .coolBeans {
   overflow: hidden;
   padding: 1rem 2rem;
@@ -17,7 +18,6 @@
 }
 
 .coolBeans::after {
-  /* background-color: ; */
   content: '';
   height: 100%;
   width: 100%;
@@ -37,4 +37,37 @@
 
 .coolBeans:hover {
   will-change: transform;
+}
+
+.fadeinLeft {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.fadeinLeft.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fadeinTop {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  opacity: 0;
+  transform: translatey(-40px);
+}
+
+.fadeinTop.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fadeinRight {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  opacity: 0;
+  transform: translatey(+40px);
+}
+
+.fadeinRight.visible {
+  opacity: 1;
+  transform: translateX(0);
 }
