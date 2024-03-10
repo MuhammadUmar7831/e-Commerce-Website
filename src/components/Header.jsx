@@ -48,7 +48,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* for large screen */}git remote add origin https://github.com/MuhammadUmar7831/e-Commerce-Website.git
+        {/* for large screen */}
         <div className="hidden lg:flex items-center">
           {/* logo section */}
           <div className="lg:w-1/6 hidden lg:block m-2">
