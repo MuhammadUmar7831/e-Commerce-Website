@@ -10,6 +10,11 @@ export default function Popular() {
         </div>
         <div className="mx-4 flex">
           <div class="bg-white rounded-lg overflow-hidden shadow-lg shadow-gray-600 hover:shadow-xl hover:shadow-gray-600 hover:cursor-pointer transition-shadow duration-500 w-full xs:w-[48%] md:w-1/3 lg:w-1/4">
+          <h5 className="text-4xl mt-4">Popular</h5>
+          <hr class="h-px my-6 mx-auto bg-gray-400 border-0 dark:bg-gray-700"></hr>
+        </div>
+        <div className="mx-4 flex">
+          <div class="bg-white rounded-lg overflow-hidden shadow-lg shadow-gray-600 hover:shadow-xl hover:shadow-gray-600 hover:cursor-pointer transition-shadow w-full xs:w-[48%] md:w-1/3 lg:w-1/4">
             <div class="relative">
               <img
                 class="w-full object-cover h-56"
@@ -31,6 +36,7 @@ export default function Popular() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </>
   );
