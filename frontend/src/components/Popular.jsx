@@ -1,6 +1,30 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import ProductCard from "../components/ProductCard";
+import { ProductContext } from "../context/ProductContext";
 
 export default function Popular() {
+  const { getProducts } = useContext(ProductContext);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getProducts();
+        console.log("Fetched data:", data.products);
+        setProducts(data.products);
+
+      } catch (error) {
+        console.log("Error fetching products:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+        console.log("Products", products);
+  }, [products])
+  
+
   return (
     <>
       <div className="mb-4">
@@ -9,34 +33,15 @@ export default function Popular() {
           <hr class="h-px my-6 mx-auto bg-gray-400 border-0 dark:bg-gray-700"></hr>
         </div>
         <div className="mx-4 flex">
-          <div class="bg-white rounded-lg overflow-hidden shadow-lg shadow-gray-600 hover:shadow-xl hover:shadow-gray-600 hover:cursor-pointer transition-shadow duration-500 w-full xs:w-[48%] md:w-1/3 lg:w-1/4">
-          <h5 className="text-4xl mt-4">Popular</h5>
-          <hr class="h-px my-6 mx-auto bg-gray-400 border-0 dark:bg-gray-700"></hr>
+          {/* Map over the products array and render ProductCard components */}
+          {products.map((product) => (
+            <ProductCard
+              key={product.idproductinfo}
+              title={product.ProductName}
+              price={product.ProductPrice}
+            />
+          ))}
         </div>
-        <div className="mx-4 flex">
-          <div class="bg-white rounded-lg overflow-hidden shadow-lg shadow-gray-600 hover:shadow-xl hover:shadow-gray-600 hover:cursor-pointer transition-shadow w-full xs:w-[48%] md:w-1/3 lg:w-1/4">
-            <div class="relative">
-              <img
-                class="w-full object-cover h-56"
-                src="https://ichef.bbci.co.uk/food/ic/food_16x9_832/recipes/paul_hollywoods_crusty_83536_16x9.jpg"
-                alt="Product Image"
-              />
-              <div class="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 m-2 rounded-md text-sm font-medium">
-                SALE
-              </div>
-            </div>
-            <div class="p-4">
-              <h3 class="text-lg font-medium mb-2">Bread</h3>
-              <div class="flex items-center justify-between">
-                <span class="font-bold text-lg">$19.99</span>
-                <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-                  Buy Now
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       </div>
     </>
   );
