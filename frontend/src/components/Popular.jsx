@@ -10,7 +10,6 @@ export default function Popular() {
     const fetchData = async () => {
       try {
         const data = await getProducts();
-        console.log("Fetched data:", data.products);
         setProducts(data.products);
 
       } catch (error) {
@@ -19,10 +18,6 @@ export default function Popular() {
     };
     fetchData();
   }, []);
-
-  useEffect(() => {
-        console.log("Products", products);
-  }, [products])
   
 
   return (
@@ -30,15 +25,18 @@ export default function Popular() {
       <div className="mb-4">
         <div className="mx-4">
           <h5 className="text-4xl mt-4">Products</h5>
-          <hr class="h-px my-6 mx-auto bg-gray-400 border-0 dark:bg-gray-700"></hr>
+          <hr className="h-px my-6 mx-auto bg-gray-400 border-0 dark:bg-gray-700"></hr>
         </div>
-        <div className="mx-4 flex">
+        {/* <div className="mx-4 flex"> */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
           {/* Map over the products array and render ProductCard components */}
           {products.map((product) => (
             <ProductCard
               key={product.ID}
-              title={product.Name}
+              name={product.Name}
+              description={product.Description}
               price={product.Price}
+              rating={product.Rating}
             />
           ))}
         </div>
