@@ -36,9 +36,9 @@ export default function Popular() {
           {/* Map over the products array and render ProductCard components */}
           {products.map((product) => (
             <ProductCard
-              key={product.idproductinfo}
-              title={product.ProductName}
-              price={product.ProductPrice}
+              key={product.ID}
+              title={product.Name}
+              price={product.Price}
             />
           ))}
         </div>

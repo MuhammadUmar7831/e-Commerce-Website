@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 router.get("/getProducts", function (req, res) {
-  const sql = "SELECT * FROM Products";
+  const sql = "SELECT * FROM Product";
   console.log(sql);
   connection.query(sql, (err, result) => {
     if (err) {
