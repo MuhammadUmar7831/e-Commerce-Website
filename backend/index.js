@@ -8,11 +8,13 @@ app.use(express.json());
 const connection = connectToDatabase();
 function createProductInfoTable() {
     const sql = `
-        CREATE TABLE IF NOT EXISTS Products (
-            idproductinfo INT AUTO_INCREMENT PRIMARY KEY,
-            ProductName VARCHAR(255) NOT NULL,
-            ProductPrice DECIMAL(10, 2) NOT NULL,
-            ProductDescription TEXT NOT NULL
+        CREATE TABLE IF NOT EXISTS Product(
+            ID INT AUTO_INCREMENT PRIMARY KEY,
+            Name VARCHAR(255) NOT NULL,
+            Price DECIMAL(10, 2) NOT NULL,
+            Description LONGTEXT NOT NULL,
+            Quantity INT ,
+            Rating Float
         )
     `;
 
@@ -28,6 +30,7 @@ function createProductInfoTable() {
 createProductInfoTable();
 // Import and use routes
 app.use('/Product', require('./AdminRoutes/ProductRoutes'));
+app.use('/Orders', require('./AdminRoutes/OrderRoutes'));
 
 const port = 3000; // Choose any available port you prefer
 app.listen(port, () => {

@@ -1,33 +1,68 @@
-import React from 'react'
-import AdminMenu from './AdminMenu'
-import DashBoard from './Dashboard'
-import ManageProducts from './ManageProducts'
-import ManageOrders from './ManageOrders'
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from "react-router-dom";
+import React, {useState} from "react";
+import AdminMenu from "./AdminMenu";
+import DashBoard from "./Dashboard";
+import ManageProducts from "./ManageProducts";
+import ManageOrders from "./ManageOrders";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 
 const Admin = () => {
-  return (   
-    <div className='h-[100vh] flex'>
-      <div className="fixed z-50 ">
-      <AdminMenu/>
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [notif, setNotif] = useState([]);
 
-      </div>
-      <div className="lg:pl-[10%] sm:pl-[40%]">
-        
-      <Router>
-        <Routes>
-          <Route exact path="/" element={<DashBoard/>} />
-          <Route  exact path="/ManageProducts" element={<ManageProducts/>} />
-          <Route exact path="/ManageOrders" element={<ManageOrders/>} />
-        </Routes>
-      </Router>
-      </div>
-    </div>
-  )
-}
+    const toggleSidebar = () => {
+        setSidebarOpen(false);
+    };
 
-export default Admin
+    return (
+        <Router>
+            <div className="flex">
+                <div className="fixed z-50">
+                    <AdminMenu notif={notif} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+                </div>
+                <div className="lg:pl-[23%] md:pl-[20%]">
+                    <Routes>
+                        <Route
+                            exact
+                            path="/"
+                            element={<ManageDashWrapper toggleSidebar={toggleSidebar} setnotif={setNotif} />}
+                        />
+                        <Route
+                            exact
+                            path="/ManageProducts"
+                            element={<ManageProductsWrapper toggleSidebar={toggleSidebar} />}
+                        />
+                        <Route
+                            exact
+                            path="/ManageOrders"
+                            element={<ManageOrdersWrapper setnotif={setNotif} toggleSidebar={toggleSidebar} />}
+                        />
+                    </Routes>
+                </div>
+            </div>
+        </Router>
+    );
+};
+
+const ManageProductsWrapper = ({toggleSidebar}) => {
+    return (
+        <div onClick={toggleSidebar}>
+            <ManageProducts />
+        </div>
+    );
+};
+const ManageOrdersWrapper = ({setnotif, toggleSidebar}) => {
+    return (
+        <div onClick={toggleSidebar}>
+            <ManageOrders setnotif={setnotif} />
+        </div>
+    );
+};
+const ManageDashWrapper = ({setnotif, toggleSidebar}) => {
+    return (
+        <div onClick={toggleSidebar}>
+            <DashBoard setnotif={setnotif} />
+        </div>
+    );
+};
+
+export default Admin;
