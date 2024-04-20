@@ -87,7 +87,9 @@ const PayLoad={
   }
 }
 
-const token = jwt.sign(PayLoad,  jwtSecret);
+const expirationTime = Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60); 
+// Sign the JWT token with the payload and expiration time
+const token = jwt.sign({ ...PayLoad, exp: expirationTime }, jwtSecret);
 
         return res.status(200).json({ token});
       } else {
