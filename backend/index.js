@@ -32,8 +32,8 @@ check('password', "Password Length 10 - 20").isLength({ min: 5, max: 15 })
   try {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
-
-    const sql = "INSERT INTO User(`Name`, `Email`, `Password`, `Address`, `Contact`,`Admin`) VALUES (?, ?, ?, ?, ?)";
+                                                                                                            // for admin
+    const sql = "INSERT INTO User(`Name`, `Email`, `Password`, `Address`, `Contact`,`Admin`) VALUES (?, ?, ?, ?, ?,'No')";
     const values = [
       req.body.name,
       req.body.email,
@@ -86,9 +86,8 @@ const PayLoad={
     email: email
   }
 }
-const token = jwt.sign(PayLoad,jwtSecret);
 
-
+const token = jwt.sign(PayLoad,  jwtSecret);
 
         return res.status(200).json({ token});
       } else {
