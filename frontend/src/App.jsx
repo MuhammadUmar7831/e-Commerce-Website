@@ -4,6 +4,9 @@ import axios from 'axios';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Home from './components/Header'; // Assuming Home component is defined in components folder
+import Carousel from "./components/Carousel";
+import Popular from "./components/Popular";
+
 
 function App() {
   const [data, setData] = useState(null);
@@ -41,15 +44,17 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-        {found&&<Login></Login>}
-      {/* Include other components like Header, Carousel, and Popular */}
+      <>
+        <Header />
+        <Carousel />
+        <Routes>
+          <Route path="/" element={<Popular />} />
+        </Routes>
+      </>
     </BrowserRouter>
   );
 }
+
+
 
 export default App;

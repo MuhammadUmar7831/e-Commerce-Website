@@ -15,7 +15,6 @@ app.use(express.json());
 
 router.get("/getProducts", function (req, res) {
   const sql = "SELECT * FROM Product";
-  console.log(sql);
   connection.query(sql, (err, result) => {
     if (err) {
       return res.status(500).json({ error: "Internal server error" });
@@ -137,6 +136,18 @@ const port = 3000; // Choose any available port you prefer
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 module.exports = router;
