@@ -27,7 +27,7 @@ export default function Popular() {
           <h5 className="text-4xl mt-4">Products</h5>
           <hr className="h-px my-6 mx-auto bg-gray-400 border-0 dark:bg-gray-700"></hr>
         </div>
-        {/* <div className="mx-4 flex"> */}
+        {/* <div className="mx-4 flex"> */}``
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
           {/* Map over the products array and render ProductCard components */}
           {products.map((product) => (

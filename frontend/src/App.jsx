@@ -1,24 +1,26 @@
-import { useState } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import Carousel from "./components/Carousel";
 import Popular from "./components/Popular";
-import Admin from "./AdminComponents/Admin";
-
+import Search from "./components/Search";
 import { ProductProvider } from "./context/ProductContext";
 
-function App() {
-  const [cunt, setCount] = useState(0);
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+function App() {
   return (
-    <>
-      <ProductProvider>
-        <Header />
-        <Carousel />
-        <Popular />
-        {/* <Admin/> */}
-      </ProductProvider>
-    </>
+    <ProductProvider>
+      <BrowserRouter>
+        <>
+          <Header />
+          <Carousel />
+          <Routes>
+            <Route path="/" element={<Popular />} />
+            <Route path="/search" element={<Search />} />
+          </Routes>
+        </>
+      </BrowserRouter>
+    </ProductProvider>
   );
 }
 

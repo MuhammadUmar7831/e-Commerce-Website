@@ -7,7 +7,7 @@ export default function ProductCard(props) {
       <div className="relative">
         <a href="#">
           <img
-            className="w-full"
+            className="w-[300px] h-[200px] object-cover"
             src="https://images.pexels.com/photos/61180/pexels-photo-61180.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;w=500"
             alt="Sunset in the mountains"
           />
