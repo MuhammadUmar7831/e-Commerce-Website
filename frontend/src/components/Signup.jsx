@@ -1,90 +1,165 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-function Signup() {
+import React, {useState} from "react";
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    address: '',
-    contact: ''
-  });
-
-  const [showPassword, setShowPassword] = useState(false);
+export default function SignUp() {
+  const [contact, setContact] = useState("");
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-
-    axios.post('http://localhost:3000/signup', formData)
-    .then(res => console.log(res))
-    .catch(err => console.log(err));
-  
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    const value = e.target.value;
+    // Only update the state if the entered value is numeric
+    if (!isNaN(value)) {
+      setContact(value);
+    }
   };
 
   return (
-    <div>
-      <div className="bg-gradient-to-b from-blue-700 to-blue-900  flex h-screen items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md space-y-8">
-          <div className="bg-white shadow-md rounded-md p-6">
-            <img className="mx-auto h-12 w-auto" src="https://www.svgrepo.com/show/499664/user-happy.svg" alt="" />
-            <h2 className="my-3 text-center text-3xl font-bold tracking-tight text-gray-900">Sign up for an account</h2>
-            <form className="space-y-6" onSubmit={handleSubmit}>
+    <>
+      <div class="h-full bg-gray-400 dark:bg-gray-900">
+        <div class="mx-auto">
+          <div class="flex justify-center px-6 py-12">
+            <div class="w-full xl:w-3/4 lg:w-11/12 flex">
+              <div
+                class="w-full h-auto bg-gray-400 dark:bg-gray-800 hidden lg:block lg:w-5/12 bg-cover rounded-l-lg"
+                style={{
+                  backgroundImage:
+                    "url('https://cdn.pixabay.com/photo/2016/12/08/19/08/bread-1892907_1280.jpg')",
+                }}
+              ></div>
+              <div class="w-full lg:w-7/12 bg-white dark:bg-gray-700 p-5 rounded-lg lg:rounded-l-none">
+                <h3 class="py-4 text-2xl text-center text-gray-800 dark:text-white">
+                  Create an Account!
+                </h3>
+                <form class="px-8 pt-6 pb-8 mb-4 bg-white dark:bg-gray-800 rounded">
+                  <div class="mb-4 md:flex md:justify-between">
+                    <div class="mb-4 md:mr-2 md:mb-0">
+                      <label
+                        class="block mb-2 text-sm font-bold text-gray-700 dark:text-white"
+                        for="Name"
+                      >
+                        Name
+                      </label>
+                      <input
+                        class="w-full px-3 py-2 text-sm leading-tight text-gray-700 dark:text-white border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                        id="Name"
+                        type="text"
+                        placeholder="Name"
+                      />
+                    </div>
+                    <div class="mb-4">
+                      <label
+                        class="block mb-2 text-sm font-bold text-gray-700 dark:text-white"
+                        for="email"
+                      >
+                        Email
+                      </label>
+                      <input
+                        class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 dark:text-white border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                        id="email"
+                        type="email"
+                        placeholder="Email"
+                      />
+                    </div>
+                    <div class="md:ml-2">
+                      <label
+                        class="block mb-2 text-sm font-bold text-gray-700 dark:text-white"
+                        for="Address"
+                      >
+                        Address
+                      </label>
+                      <input
+                        class="w-full px-3 py-2 text-sm leading-tight text-gray-700 dark:text-white border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                        id="Address"
+                        type="text"
+                        placeholder="Address"
+                      />
+                    </div>
+                  </div>
+                  <div class="md:ml-2">
+                    <div class="md:ml-2">
+                      <label
+                        class="block mb-2 text-sm font-bold text-gray-700 dark:text-white"
+                        for="Contact"
+                      >
+                        Contact
+                      </label>
+                      <input
+                        class="w-full px-3 py-2 text-sm leading-tight text-gray-700 dark:text-white border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                        id="Contact"
+                        type="text"
+                        placeholder="Contact"
+                        pattern="[0-9]*"
+                        value={contact}
+                        onChange={handleChange}
+                        title="Please enter only numeric values"
+                      />
+                    </div>
 
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
-                <div className="mt-1">
-                  <input name="name" type="text" required value={formData.name} onChange={handleChange} className="px-2 py-3 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm" />
-                </div>
-              </div>
+                    {/* <ContactInput /> */}
+                  </div>
 
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                <div className="mt-1">
-                  <input name="email" type="email" required value={formData.email} onChange={handleChange} className="px-2 py-3 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm" />
-                </div>
+                  <div class="mb-4 md:flex md:justify-between">
+                    <div class="mb-4 md:mr-2 md:mb-0">
+                      <label
+                        class="block mb-2 text-sm font-bold text-gray-700 dark:text-white"
+                        for="password"
+                      >
+                        Password
+                      </label>
+                      <input
+                        class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 dark:text-white border border-red-500 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                        id="password"
+                        type="password"
+                        placeholder="******************"
+                      />
+                      <p class="text-xs italic text-red-500">
+                        Please choose a password.
+                      </p>
+                    </div>
+                    <div class="md:ml-2">
+                      <label
+                        class="block mb-2 text-sm font-bold text-gray-700 dark:text-white"
+                        for="c_password"
+                      >
+                        Confirm Password
+                      </label>
+                      <input
+                        class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 dark:text-white border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                        id="c_password"
+                        type="password"
+                        placeholder="******************"
+                      />
+                    </div>
+                  </div>
+                  <div class="mb-6 text-center">
+                    <button
+                      class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-900 focus:outline-none focus:shadow-outline"
+                      type="button"
+                    >
+                      Register Account
+                    </button>
+                  </div>
+                  <hr class="mb-6 border-t" />
+                  <div class="text-center">
+                    <a
+                      class="inline-block text-sm text-blue-500 dark:text-blue-500 align-baseline hover:text-blue-800"
+                      href="#"
+                    >
+                      Forgot Password?
+                    </a>
+                  </div>
+                  <div class="text-center">
+                    <a
+                      class="inline-block text-sm text-blue-500 dark:text-blue-500 align-baseline hover:text-blue-800"
+                      href="./index.html"
+                    >
+                      Already have an account? Login!
+                    </a>
+                  </div>
+                </form>
               </div>
-
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-                <div className="mt-1 flex items-center rounded-md border border-gray-300 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500">
-                  <input name="password" type={showPassword ? "text" : "password"} required value={formData.password} onChange={handleChange} className=" focus:outline-none w-11/12 px-2 py-3 mt-1 block  sm:text-sm" />
-                  <button type="button" onClick={togglePasswordVisibility} className='h-fit w-7'>{showPassword ? <i className="fas fa-eye"></i> : <i className="fas fa-eye-slash"></i>}</button>
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
-                <div className="mt-1">
-                  <input name="address" type="text" value={formData.address} onChange={handleChange} className="px-2 py-3 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm" />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="contact" className="block text-sm font-medium text-gray-700">Contact</label>
-                <div className="mt-1">
-                  <input name="contact" type="tel" value={formData.contact} onChange={handleChange} className="px-2 py-3 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm" />
-                </div>
-              </div>
-
-              <div>
-                <button type="submit" className="flex w-full justify-center rounded-md border border-transparent bg-gradient-to-b from-green-500 to-yellow-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2">Register Account</button>
-              </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
-
-export default Signup;
