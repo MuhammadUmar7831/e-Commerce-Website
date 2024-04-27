@@ -149,7 +149,11 @@ export default function SignUp() {
                   <div class="text-center">
                     <a
                       class="inline-block text-sm text-blue-500 dark:text-blue-500 align-baseline hover:text-blue-800"
+<<<<<<< HEAD
                       href="/login"
+=======
+                      href="./index.html"
+>>>>>>> bdb8f831919dbd2b04e8acaaebce807d712ff32a
                     >
                       Already have an account? Login!
                     </a>
@@ -162,4 +166,8 @@ export default function SignUp() {
       </div>
     </>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> bdb8f831919dbd2b04e8acaaebce807d712ff32a
