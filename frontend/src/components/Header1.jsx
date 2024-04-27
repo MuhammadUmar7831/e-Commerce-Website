@@ -22,7 +22,7 @@ export default function Header1() {
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row items-center m-2">
+      <div className="flex flex-col lg:flex-row items-center m-2 border-2 border-black h-16">
         {/* Logo section */}
         <div className="lg:w-1/6 m-2 lg:m-0">
           <img src="Logo-Final-C.png" alt="Logo" />
