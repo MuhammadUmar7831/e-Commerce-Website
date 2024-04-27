@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
 const ManageProducts = () => {
     const host = "localhost:3000";
@@ -67,10 +67,10 @@ const ManageProducts = () => {
         fetchData();
     }, []);
 
-    const handleAddProduct = async () => {
-        try {
-            setErrorMessage("");
-            setHighlightFields(false);
+  const handleAddProduct = async () => {
+    try {
+      setErrorMessage("");
+      setHighlightFields(false);
 
             if (!productName || !productPrice || !productDescription) {
                 const price = parseFloat(productPrice);
@@ -98,10 +98,10 @@ const ManageProducts = () => {
                 body: JSON.stringify(productData),
             });
 
-            if (!response.ok) {
-                throw new Error("Failed to add product");
-            }
-            const responseData = await response.json();
+      if (!response.ok) {
+        throw new Error("Failed to add product");
+      }
+      const responseData = await response.json();
 
             const newProduct = {
                 ID: responseData.product.ID,
@@ -161,11 +161,11 @@ const ManageProducts = () => {
                 body: JSON.stringify(updatedProductData),
             });
 
-            if (!response.ok) {
-                throw new Error("Failed to update product");
-            }
+      if (!response.ok) {
+        throw new Error("Failed to update product");
+      }
 
-            console.log("Product updated successfully");
+      console.log("Product updated successfully");
 
             // Close the modal
             setShowUpdateModal(false);

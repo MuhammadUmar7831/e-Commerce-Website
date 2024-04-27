@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const connectToDatabase = require('../database');
-const connection = connectToDatabase();
+const connection = require('../database');
 const multer=require('multer');
 router.post('/addproduct', function(req, res) {
     const sql = "INSERT INTO Product (Name, Price, Description,Quantity) VALUES (?, ?, ?, ?)";

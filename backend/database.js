@@ -20,5 +20,5 @@ function connectToDatabase() {
 
   return connection;
 }
-
-module.exports = connectToDatabase;
+const connection = connectToDatabase();
+module.exports = connection;

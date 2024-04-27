@@ -81,6 +81,6 @@ const AdminMenu = ({ notif, sidebarOpen, setSidebarOpen }) => {
       </aside>
     </>
   );
-}
+};
 
 export default AdminMenu;
