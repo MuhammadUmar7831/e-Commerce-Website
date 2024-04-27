@@ -1,57 +1,106 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import axios from 'axios';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import Home from './components/Header'; // Assuming Home component is defined in components folder
+import "./App.css";
+import Header from "./components/Header";
 import Carousel from "./components/Carousel";
 import Popular from "./components/Popular";
+import Search from "./components/Search";
+import { ProductProvider } from "./context/ProductContext";
 
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Buy_Add from "./components/Buy_Add";
+import PLaceOrder from "./components/PLaceOrder";
+import { useState } from "react";
+import AddToCart from "./components/Addtocart";
+import CurrentOrders from "./components/CurrentOrders";
 
 function App() {
-  const [data, setData] = useState(null);
-  const [found, setFound] = useState(false);
+  const [productQuantity,setproductQuantity]=useState();
+  const [productId,setproductId]=useState();
+  const [CartLength,setCartlength]=useState();
+  const [carouseCheck,setcarouseCheck]=useState(true);
+  const [hide, sethide] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      
-      try {
-        const token = localStorage.getItem('auth-token');
-        if (!token) {
-          setFound(true);
-          return;
-        }
-        
-        const response = await axios.post('http://localhost:3000/getUser', null, {
-          headers: {
-            'auth-token': token
-          }
-        });
-        
-        setData(response.data);
-      } catch(error) {
-        if (error.response.data.error==="please 2 authenticate using a valid token" && error.response.status === 401) {
-          const errorMessage = error.response.data.error;
-          localStorage.removeItem('auth-token');
-        } else {
-          console.error('Error fetching data:', error);
-        }
-      }
-    };
+
+  const [stateObject, setStateObject] = useState({
+    name: "",
+    description: "",
+    price: "",
+    rating: "",
+    quantity: "",
+    check:false,
+    checkPlaceOrder:true,
+    check2:false
+
+  });
+
+localStorage.removeItem('auth-token')
+// //localStorage.removeItem('Cart-items')
+  localStorage.setItem('auth-token','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxOH0sImlhdCI6MTcxNDE4NjcwNywiZXhwIjoxNzE0NzkxNTA3fQ.JOe5U2fc3mzcdovDRVwSV4gijA8E_NoWd2yaf5sxusw');
   
-    fetchData();
-  }, []);
-
   return (
-    <BrowserRouter>
-      <>
-        <Header />
-        <Carousel />
-        <Routes>
-          <Route path="/" element={<Popular />} />
-        </Routes>
-      </>
-    </BrowserRouter>
+
+
+    <ProductProvider>
+      <BrowserRouter>
+        <>
+          <Header
+          sethide={sethide}
+          setCartlength={setCartlength}
+          CartLength={CartLength} />
+         {!stateObject.check&&
+                   <>{carouseCheck&&<Carousel />}
+                   <Routes>
+            <Route path="/" element={<Popular 
+            setproductId={setproductId}
+            stateObject={stateObject}
+            setStateObject={setStateObject}
+            productQuantity={productQuantity}
+            setproductQuantity={setproductQuantity}
+            />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/orders" element={<CurrentOrders
+            hide={hide}
+            sethide={sethide}
+            setcarouseCheck={setcarouseCheck}
+            />}/>
+            <Route path="/Buyadd" element={<Buy_Add />} />
+             <Route path="/addtoCart" element={<AddToCart
+             setCartlength={setCartlength}
+             setStateObject={setStateObject}
+             stateObject={stateObject}
+             setcarouseCheck={setcarouseCheck}
+             setproductId={setproductId}
+             setproductQuantity={setproductQuantity}
+              />} />
+          </Routes></>}
+
+          {stateObject.check2&&stateObject.checkPlaceOrder&&stateObject.check&&<Buy_Add
+    name={stateObject.name}
+    description={stateObject.description}
+    price={stateObject.price}
+    rating={stateObject.rating}
+    quantity={stateObject.quantity}
+    productQuantity={productQuantity}
+    setStateObject={setStateObject}
+    stateObject={stateObject}
+    productId={productId}
+
+    />}
+              {!stateObject.checkPlaceOrder&&stateObject.check&&<PLaceOrder
+    name={stateObject.name}
+    description={stateObject.description}
+    price={stateObject.price}
+    rating={stateObject.rating}
+    quantity={stateObject.quantity}
+    setproductQuantity={setproductQuantity}
+    productQuantity={productQuantity}
+    setStateObject={setStateObject}
+    productId={productId}
+    stateObject={stateObject}
+
+    />}
+        </>
+      </BrowserRouter>
+    </ProductProvider>
   );
 }
 

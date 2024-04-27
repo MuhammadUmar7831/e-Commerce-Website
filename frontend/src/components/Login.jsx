@@ -1,77 +1,97 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import React from "react";
+import SignUp from "./SignUp";
 
-function Login() {
-
-  const [showPassword, setShowPassword] = useState(false);
-const [Formdata,setFormData]=useState({
-email:'',
-password:''
-});
-
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-  axios.post('http://localhost:3000/login', Formdata)
-    .then(response => {
-      if (response.status === 200) {
-        const token = response.data.token;
-        localStorage.removeItem('auth-token');
-         localStorage.setItem('auth-token', token);
-      } else {
-        console.log("No match");
-      }
-    })
-    .catch(err => console.error(err));
-}
-
-
-
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));  };
-
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-
+export default function Login() {
   return (
-    <div className=''>
-      <div className=" bg-gradient-to-b from-purple-700 to-white h-screen overflow-hidden flex items-center justify-center">
-        <div className="bg-white lg:w-6/12 md:7/12 w-8/12 shadow-3xl rounded-xl">
-          <div className="bg-gray-800 shadow shadow-gray-200 absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full p-4 md:p-8">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="#FFF">
-              <path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/>
-            </svg>
+    <>
+      {/* <!-- https://play.tailwindcss.com/MIwj5Sp9pw --> */}
+      <div class="py-16">
+        <div class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+          <div
+            className="hidden lg:block lg:w-1/2 bg-cover"
+            style={{
+              backgroundImage:
+                "url('https://cdn.pixabay.com/photo/2016/12/08/19/08/bread-1892907_1280.jpg')",
+            }}
+          ></div>
+          <div class="w-full p-8 lg:w-1/2">
+            <h2 class="text-2xl font-semibold text-gray-700 text-center">
+              Login
+            </h2>
+            <p class="text-xl text-gray-600 text-center">Welcome back!</p>
+            <a
+              href="#"
+              class="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100"
+            >
+              <div class="px-4 py-3">
+                <svg class="h-6 w-6" viewBox="0 0 40 40">
+                  <path
+                    d="M36.3425 16.7358H35V16.6667H20V23.3333H29.4192C28.045 27.2142 24.3525 30 20 30C14.4775 30 10 25.5225 10 20C10 14.4775 14.4775 9.99999 20 9.99999C22.5492 9.99999 24.8683 10.9617 26.6342 12.5325L31.3483 7.81833C28.3717 5.04416 24.39 3.33333 20 3.33333C10.7958 3.33333 3.33335 10.7958 3.33335 20C3.33335 29.2042 10.7958 36.6667 20 36.6667C29.2042 36.6667 36.6667 29.2042 36.6667 20C36.6667 18.8825 36.5517 17.7917 36.3425 16.7358Z"
+                    fill="#FFC107"
+                  />
+                  <path
+                    d="M5.25497 12.2425L10.7308 16.2583C12.2125 12.59 15.8008 9.99999 20 9.99999C22.5491 9.99999 24.8683 10.9617 26.6341 12.5325L31.3483 7.81833C28.3716 5.04416 24.39 3.33333 20 3.33333C13.5983 3.33333 8.04663 6.94749 5.25497 12.2425Z"
+                    fill="#FF3D00"
+                  />
+                  <path
+                    d="M20 36.6667C24.305 36.6667 28.2167 35.0192 31.1742 32.34L26.0159 27.975C24.3425 29.2425 22.2625 30 20 30C15.665 30 11.9842 27.2359 10.5975 23.3784L5.16254 27.5659C7.92087 32.9634 13.5225 36.6667 20 36.6667Z"
+                    fill="#4CAF50"
+                  />
+                  <path
+                    d="M36.3425 16.7358H35V16.6667H20V23.3333H29.4192C28.7592 25.1975 27.56 26.805 26.0133 27.9758C26.0142 27.975 26.015 27.975 26.0158 27.9742L31.1742 32.3392C30.8092 32.6708 36.6667 28.3333 36.6667 20C36.6667 18.8825 36.5517 17.7917 36.3425 16.7358Z"
+                    fill="#1976D2"
+                  />
+                </svg>
+              </div>
+              <h1 class="px-4 py-3 w-5/6 text-center text-gray-600 font-bold">
+                Sign in with Google
+              </h1>
+            </a>
+            <div class="mt-4 flex items-center justify-between">
+              <span class="border-b w-1/5 lg:w-1/4"></span>
+              <a href="#" class="text-xs text-center text-gray-500 uppercase">
+                or login with email
+              </a>
+              <span class="border-b w-1/5 lg:w-1/4"></span>
+            </div>
+            <div class="mt-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2">
+                Email Address
+              </label>
+              <input
+                class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                type="email"
+              />
+            </div>
+            <div class="mt-4">
+              <div class="flex justify-between">
+                <label class="block text-gray-700 text-sm font-bold mb-2">
+                  Password
+                </label>
+                <a href="#" class="text-xs text-gray-500">
+                  Forget Password?
+                </a>
+              </div>
+              <input
+                class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                type="password"
+              />
+            </div>
+            <div class="mt-8">
+              <button class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">
+                Login
+              </button>
+            </div>
+            <div class="mt-4 flex items-center justify-between">
+              <span class="border-b w-1/5 md:w-1/4"></span>
+              <a href="#" class="text-xs text-gray-500 uppercase">
+                or sign up
+              </a>
+              <span class="border-b w-1/5 md:w-1/4"></span>
+            </div>
           </div>
-          <form className="p-12 md:p-24 " onSubmit={handleSubmit}>
-            <div className="flex items-center text-lg mb-6 md:mb-8 ">
-              <svg className="absolute ml-3" width="24" viewBox="0 0 24 24">
-                <path d="M20.822 18.096c-3.439-.794-6.64-1.49-5.09-4.418 4.72-8.912 1.251-13.678-3.732-13.678-5.082 0-8.464 4.949-3.732 13.678 1.597 2.945-1.725 3.641-5.09 4.418-3.073.71-3.188 2.236-3.178 4.904l.004 1h23.99l.004-.969c.012-2.688-.092-4.222-3.176-4.935z"/>
-              </svg>
-              <input type="email" id="username" name="email" value={Formdata.email} required onChange={handleChange} className="bg-gray-200 rounded pl-12 py-2 md:py-4 focus:outline-none w-full" placeholder="Email" />
-            </div>
-            <div className="flex items-center text-lg mb-6 md:mb-8 bg-gray-200">
-              <svg className="absolute ml-3" viewBox="0 0 24 24" width="24">
-                <path d="m18.75 9h-.75v-3c0-3.309-2.691-6-6-6s-6 2.691-6 6v3h-.75c-1.24 0-2.25 1.009-2.25 2.25v10.5c0 1.241 1.01 2.25 2.25 2.25h13.5c1.24 0 2.25-1.009 2.25-2.25v-10.5c0-1.241-1.01-2.25-2.25-2.25zm-10.75-3c0-2.206 1.794-4 4-4s4 1.794 4 4v3h-8zm5 10.722v2.278c0 .552-.447 1-1 1s-1-.448-1-1v-2.278c-.595-.347-1-.985-1-1.722 0-1.103.897-2 2-2s2 .897 2 2c0 .737-.405 1.375-1 1.722z"/>
-              </svg>
-              <input name = 'password' type={showPassword ? "text" : "password"}  id="password"  value={Formdata.password} required onChange={handleChange} className=" bg-gray-200 rounded pl-12 py-2 md:py-4 focus:outline-none w-full" placeholder="Password" />
-              <button type="button" onClick={togglePasswordVisibility} className='h-fit w-7 mr-2'>{showPassword ? <i className="fas fa-eye"></i> : <i className="fas fa-eye-slash"></i>}</button>
-            </div>
-            <button type="submit" className="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 md:p-4 text-white uppercase w-full rounded">Login</button>
-           <div  className=" text-center mt-3 bg-gradient-to-b from-blue-700 to-blue-900 font-medium p-2 md:p-4 text-white uppercase w-full rounded"><Link to='/signup'>Create Account</Link></div>
-          </form>
         </div>
       </div>
-    </div>
+    </>
   );
 }
-
-export default Login;
