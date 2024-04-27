@@ -1,25 +1,28 @@
 import "./App.css";
-import Header from "./components/Header";
-import Carousel from "./components/Carousel";
 import Popular from "./components/Popular";
 import Search from "./components/Search";
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
 import { ProductProvider } from "./context/ProductContext";
+import { UserProvider } from "./context/UserContext";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
     <ProductProvider>
-      <BrowserRouter>
-        <>
-          <Header />
-          <Carousel />
-          <Routes>
-            <Route path="/" element={<Popular />} />
-            <Route path="/search" element={<Search />} />
-          </Routes>
-        </>
-      </BrowserRouter>
+      <UserProvider>
+        <BrowserRouter>
+          <>
+            <Routes>
+              <Route path="/" element={<Popular />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+            </Routes>
+          </>
+        </BrowserRouter>
+      </UserProvider>
     </ProductProvider>
   );
 }

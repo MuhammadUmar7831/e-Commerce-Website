@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { ProductContext } from "../context/ProductContext";
+import Header from "./Header";
+import Carousel from "./Carousel";
 
 export default function Popular() {
   const { getProducts } = useContext(ProductContext);
@@ -11,17 +13,17 @@ export default function Popular() {
       try {
         const data = await getProducts();
         setProducts(data.products);
-
       } catch (error) {
         console.log("Error fetching products:", error);
       }
     };
     fetchData();
   }, []);
-  
 
   return (
     <>
+      <Header />
+      <Carousel />
       <div className="mb-4">
         <div className="mx-4">
           <h5 className="text-4xl mt-4">Products</h5>

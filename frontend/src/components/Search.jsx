@@ -4,6 +4,8 @@ import FilterBadge from "./FilterBadge";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider"; // https://mui.com/material-ui/react-slider/
 import { ProductContext } from "../context/ProductContext";
+import Header from "./Header";
+import Carousel from "./Carousel";
 
 export default function Search() {
   const { searchResult, searchQuery } = useContext(ProductContext);
@@ -39,6 +41,8 @@ export default function Search() {
   const renderProduct = (products) => {
     return (
       <>
+        <Header />
+        <Carousel />
         {products.map((product) => (
           <ProductCard
             key={product.ID}
