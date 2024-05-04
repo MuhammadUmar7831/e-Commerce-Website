@@ -41,11 +41,10 @@ export default function Search() {
   const renderProduct = (products) => {
     return (
       <>
-        <Header />
-        <Carousel />
         {products.map((product) => (
           <ProductCard
             key={product.ID}
+            image={product.Image}
             name={product.Name}
             description={product.Description}
             price={product.Price}
@@ -101,6 +100,8 @@ export default function Search() {
 
   return (
     <>
+      <Header />
+      <Carousel />
       <div className="mx-4">
         <h5 className="text-4xl mt-4">
           {filteredProducts.length} Result(s) for "{searchQuery}"

@@ -13,6 +13,7 @@ export default function Popular() {
       try {
         const data = await getProducts();
         setProducts(data.products);
+        console.log(data.products);
       } catch (error) {
         console.log("Error fetching products:", error);
       }
@@ -35,10 +36,14 @@ export default function Popular() {
           {products.map((product) => (
             <ProductCard
               key={product.ID}
+              id={product.ID}
+              image={product.Image}
               name={product.Name}
               description={product.Description}
               price={product.Price}
               rating={product.Rating}
+              quantity={product.Quantity
+              }
             />
           ))}
         </div>

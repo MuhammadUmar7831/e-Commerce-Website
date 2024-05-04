@@ -2,6 +2,7 @@ import * as React from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProductContext } from "../context/ProductContext";
+import Navbar from "./Navbar";
 
 // material ui components
 import { styled, alpha } from "@mui/material/styles";
@@ -58,7 +59,7 @@ export default function Header() {
   const { getProductsBySearch, searchQuery, setSearchQuery, setSearchResult } =
     useContext(ProductContext);
   const navigate = useNavigate();
-  
+
   const handleInputChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -74,68 +75,76 @@ export default function Header() {
   };
 
   return (
-    <div className="workSans">
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" sx={{ background: white }}>
-          <Toolbar>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            >
-              BakeNest
-            </Typography>
-            <Box sx={{ flexGrow: 5 }}>
-              <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  placeholder="I'm shopping for..."
-                  inputProps={{ "aria-label": "search" }}
-                  value={searchQuery}
-                  onChange={handleInputChange}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      search();
-                    }
-                  }}
-                />
-              </Search>
-            </Box>
-            <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ display: { xs: "flex", md: "flex" } }}>
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                // aria-controls={menuId}
-                aria-haspopup="true"
-                // onClick={handleProfileMenuOpen}
-                color="inherit"
+    <>
+      <div className="workSans">
+        <Box sx={{ flexGrow: 1 }}>
+          <AppBar position="static" sx={{ background: white }}>
+            <Toolbar>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
               >
-                <Badge badgeContent={17} color="error">
-                  <ShoppingCartIcon fontSize="large" />
-                </Badge>
-              </IconButton>
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                // aria-controls={menuId}
-                aria-haspopup="true"
-                // onClick={handleProfileMenuOpen}
-                color="inherit"
-              >
-                <Badge badgeContent={"1"} color="error">
-                  <AccountCircle fontSize="large" onClick={()=>{navigate("/login")}}/>
-                </Badge>
-              </IconButton>
-            </Box>
-          </Toolbar>
-        </AppBar>
-      </Box>
-    </div>
+                BakeNest
+              </Typography>
+              <Box sx={{ flexGrow: 5 }}>
+                <Search>
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    placeholder="I'm shopping for..."
+                    inputProps={{ "aria-label": "search" }}
+                    value={searchQuery}
+                    onChange={handleInputChange}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        search();
+                      }
+                    }}
+                  />
+                </Search>
+              </Box>
+              <Box sx={{ flexGrow: 1 }} />
+              <Box sx={{ display: { xs: "flex", md: "flex" } }}>
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  // aria-controls={menuId}
+                  aria-haspopup="true"
+                  // onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <Badge badgeContent={17} color="error">
+                    <ShoppingCartIcon fontSize="large" />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  // aria-controls={menuId}
+                  aria-haspopup="true"
+                  // onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <Badge badgeContent={"1"} color="error">
+                    <AccountCircle
+                      fontSize="large"
+                      onClick={() => {
+                        navigate("/login");
+                      }}
+                    />
+                  </Badge>
+                </IconButton>
+              </Box>
+            </Toolbar>
+          </AppBar>
+        </Box>
+      </div>
+      <Navbar />
+    </>
   );
 }

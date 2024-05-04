@@ -6,7 +6,7 @@ const ProductProvider = (props) => {
   const host = "http://localhost:3000";
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResult, setSearchResult] = useState([])
+  const [searchResult, setSearchResult] = useState([]);
 
   const getProducts = async () => {
     try {
@@ -33,7 +33,6 @@ const ProductProvider = (props) => {
 
   const getProductsBySearch = async () => {
     try {
-      
       const url = `${host}/search?q=${encodeURIComponent(searchQuery)}`;
 
       const response = await fetch(url, {
@@ -55,8 +54,22 @@ const ProductProvider = (props) => {
     }
   };
 
+  const [object, setObject] = useState({})
+
   return (
-    <ProductContext.Provider value={{ getProducts, getProductsBySearch, searchQuery, setSearchQuery, searchResult, setSearchResult }}>
+    <ProductContext.Provider
+      value={{
+        host,
+        getProducts,
+        getProductsBySearch,
+        searchQuery,
+        setSearchQuery,
+        searchResult,
+        setSearchResult,
+        object,
+        setObject
+      }}
+    >
       {props.children}
     </ProductContext.Provider>
   );

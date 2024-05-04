@@ -1,14 +1,14 @@
 import React, { useState, useContext } from "react";
-import SignUp from "./SignUp";
+// import SignUp from "./SignUp";
 import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -20,6 +20,9 @@ export default function Login() {
 
     try {
       await login(formData);
+      
+      navigate("/");
+
       console.log("Login successful.");
     } catch (error) {
       console.error("Login failed:", error);
@@ -30,8 +33,8 @@ export default function Login() {
   return (
     <>
       {/* <!-- https://play.tailwindcss.com/MIwj5Sp9pw --> */}
-      <div className="py-16">
-        <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+      <div className="py-16 h-screen">
+        <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl h-full">
           <div
             className="hidden lg:block lg:w-1/2 bg-cover"
             style={{
@@ -78,7 +81,7 @@ export default function Login() {
             <div className="mt-8">
               <button
                 className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
-                onClick={handleSubmit} // Call handleSubmit function on button click
+                onClick={handleSubmit}
               >
                 Login
               </button>

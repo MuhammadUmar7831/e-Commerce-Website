@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
-const jwtSecret = require('crypto').randomBytes(64).toString('hex');
-console.log(jwtSecret);
+const crypto = require('crypto');
+// const jwtSecret = crypto.randomBytes(64).toString('hex');
+const jwtSecret = "graceMarketing";
+
 module.exports = jwtSecret;

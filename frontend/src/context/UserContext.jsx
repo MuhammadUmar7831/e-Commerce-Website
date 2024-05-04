@@ -13,19 +13,22 @@ const UserProvider = (props) => {
       },
       body: JSON.stringify(formData),
     });
-    
+
     if (!response.ok) {
       throw "Something went wrong";
     } else {
-      const token = await response.token;
-      localStorage.removeItem("auth-token");
+      const responseData = await response.json(); 
+      const { token, email } = responseData;
+
+      localStorage.clear();
       localStorage.setItem("auth-token", token);
+
       return token;
     }
   };
 
   return (
-    <UserContext.Provider value={{ login }}>
+    <UserContext.Provider value={{ login, host }}>
       {props.children}
     </UserContext.Provider>
   );
