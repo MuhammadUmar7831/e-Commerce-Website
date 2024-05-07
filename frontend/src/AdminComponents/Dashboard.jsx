@@ -24,6 +24,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ManageProducts from "./ManageProducts";
 import ManageOrders from "./ManageOrders";
+import Statistics from "./Statistics";
 
 const drawerWidth = 240;
 
@@ -183,6 +184,7 @@ export default function Dashboard() {
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "64px" }}>
         <BrowserRouter>
           <Routes>
+            <Route path="/" element={<Statistics />} />
             <Route path="/manageProducts" element={<ManageProducts />} />
             <Route path="/manageOrders" element={<ManageOrders />} />
           </Routes>

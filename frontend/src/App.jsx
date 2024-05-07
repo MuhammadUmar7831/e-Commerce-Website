@@ -16,20 +16,20 @@ function App() {
   return (
     <ProductProvider>
       <UserProvider>
-        {/* <Admin /> */}
-        <BrowserRouter>
+        <Admin />
+        {/* <BrowserRouter>
           <>
             <Routes>
               <Route path="/" element={<Popular />} />
               <Route path="/search" element={<Search />} />
               <Route path="/login" element={<Login />} />
               {/* <Route path="/signup" element={<SignUp />} /> */}
-              <Route path="/productDetail" element={<ProductDetail />} />
+              {/*</UserProvider><Route path="/productDetail" element={<ProductDetail />} />
               <Route path="/orders" element={<Orders />} />
               <Route path="/cart" element={<Cart />} />
             </Routes>
           </>
-        </BrowserRouter>
+        </BrowserRouter> */}
       </UserProvider>
     </ProductProvider>
   );

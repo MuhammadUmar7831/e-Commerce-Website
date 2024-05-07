@@ -453,8 +453,10 @@ router.post("/deleteCartItem", async function (req, res) {
 
 
 // Import and use routes
-app.use("/Product", require("./AdminRoutes/ProductRoutes"));
 app.use("/", router);
+app.use("/Product", require("./AdminRoutes/ProductRoutes"));
+app.use("/Statistics", require("./AdminRoutes/StatisticsRoutes"));
+app.use('/Orders', require('./AdminRoutes/OrderRoutes'));
 
 const port = 3000; // Choose any available port you prefer
 app.listen(port, () => {

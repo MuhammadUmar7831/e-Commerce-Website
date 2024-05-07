@@ -50,27 +50,37 @@ router.post("/addproduct", upload.single("image"), function (req, res) {
 });
 
 router.post("/updateproduct", upload.single("image"), function (req, res) {
-    const { productId, pname, price, pdesc } = req.body;
-    const imageValues = "images/" + [req.file.filename];
-  
-    const sql = `UPDATE Product SET Name = ?, Price = ?, Description = ?, Image = ? WHERE ID = ?`;
-    const values = [pname, price, pdesc, imageValues, productId];
-  
-    connection.query(sql, values, (err, result) => {
-      if (err) {
-        console.error("Error updating product:", err);
-        return res.status(500).json({ error: "Internal server error" });
-      }
-      const newProduct = {
-        ID: result.insertId,
-        Name: req.body.pname,
-        Price: req.body.price,
-        Description: req.body.pdesc,
-        Image: imageValues
-      };
-      return res.status(200).json({ message: "Product updated successfully", product: newProduct });
-    });
-  });  
+  const { productId, pname, price, pdesc } = req.body;
+
+  let sql;
+  let values;
+
+  if (req.file) {
+    const imageValues = "images/" + req.file.filename;
+    sql = `UPDATE Product SET Name = ?, Price = ?, Description = ?, Image = ? WHERE ID = ?`;
+    values = [pname, price, pdesc, imageValues, productId];
+  } else {
+    sql = `UPDATE Product SET Name = ?, Price = ?, Description = ? WHERE ID = ?`;
+    values = [pname, price, pdesc, productId];
+  }
+
+  connection.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error updating product:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+    const newProduct = {
+      ID: productId,
+      Name: pname,
+      Price: price,
+      Description: pdesc,
+      Image: req.file ? "images/" + req.file.filename : null, // Set image only if uploaded
+    };
+    return res
+      .status(200)
+      .json({ message: "Product updated successfully", product: newProduct });
+  });
+});
 
 router.get("/allProducts", function (req, res) {
   const sql = "SELECT * FROM Product";

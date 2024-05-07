@@ -125,7 +125,7 @@ const ManageProducts = () => {
       setErrorMessage("");
       setHighlightFields(false);
 
-      if (!updatedName || !updatedPrice || !updatedDescription || !image) {
+      if (!updatedName || !updatedPrice || !updatedDescription) {
         const price = parseFloat(updatedPrice);
         if (isNaN(price) || price <= 0) {
           setErrorMessage("Please enter a valid product price.");
@@ -137,11 +137,13 @@ const ManageProducts = () => {
         return;
       }
 
-      const imageType = image.type.split("/")[0];
-      if (imageType !== "image") {
-        setErrorMessage("Please upload an image file.");
-        setHighlightFields(true); // Highlight fields if error occurs
-        return;
+      if (image) {
+        const imageType = image.type.split("/")[0];
+        if (imageType !== "image") {
+          setErrorMessage("Please upload an image file.");
+          setHighlightFields(true); // Highlight fields if error occurs
+          return;
+        }
       }
 
       setErrorMessage("");
@@ -174,7 +176,7 @@ const ManageProducts = () => {
             Name: updatedName,
             Price: updatedPrice,
             Description: updatedDescription,
-            Image: responseData.product.Image,
+            Image: responseData.product.Image !== null ? responseData.product.Image : product.Image
           };
         }
         return product;
@@ -206,7 +208,7 @@ const ManageProducts = () => {
       {/* Button to open the modal */}
       <div className="fixed bottom-10 right-10 z-40">
         <button
-          className="w-16 h-16 rounded-full flex justify-center items-center text-white text-3xl bg-gradient-to-br from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600"
+          className="w-16 h-16 rounded-full flex justify-center items-center text-white text-3xl bg-gradient-to-br from-teal-400 to-sky-500 hover:from-teal-500 hover:to-sky-600"
           onClick={() => setShowModal(true)}
         >
           +
