@@ -3,23 +3,13 @@ import { useContext } from "react";
 import { ProductContext } from "../context/ProductContext";
 import OrderSummaryPopup from "./OrderSummaryPopup";
 
-// import PLaceOrder from "./PLaceOrder";
-import { Link } from "react-router-dom";
-import { Button } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
 
 function CartCard(props) {
-  const [qty, setQty] = useState(props.cartQuantity);
   const [isVisible, setIsVisible] = useState(false);
   const { host } = useContext(ProductContext);
   const [orderSummaryModalOpen, setOrderSummaryModalOpen] = useState(false);
-
-  const [expanded, setExpanded] = useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
 
   const handleExpandClick1 = () => {
     setIsVisible(true);
@@ -63,14 +53,14 @@ function CartCard(props) {
   return (
     <>
       <div className="flex flex-col lg:flex-row w-4/6 my-8 mx-auto h-4/6 shadow-2xl overflow-hidden rounded-lg">
-        <div className="w-2/5 h-2/5 p-5 lg:border-r border-gray-400 relative">
-          <img
-            className="w-[400px] h-[400px] object-cover"
-            src={props.product.Image}
-            alt="Paella dish"
-          />
-          <div className="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25"></div>
-        </div>
+        <div className="lg:w-1/2 h-4/5 border-r border-gray-400 relative p-4">
+            <div className="flex hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 opacity-15"></div>
+            <img
+              className="h-[400px] w-[400px] object-cover"
+              src={props.product.Image}
+              alt="Image"
+            />
+          </div>
         <div className="lg:w-1/2 flex flex-col justify-between">
           <div className="m-5">
             <div className="py-3">
@@ -117,7 +107,7 @@ function CartCard(props) {
         productId={props.product.ID}
         name={props.product.Name}
         price={props.product.Price}
-        qty={props.product.Quantity}
+        qty={[props.product.cartQuantity]}
         host={host}
         setPlaceOrderAlert={props.setPlaceOrderAlert}
         fromCart={true}

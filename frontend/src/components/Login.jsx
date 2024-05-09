@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 // import SignUp from "./SignUp";
 import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 import Alert from "@mui/material/Alert";
 
@@ -19,9 +21,13 @@ export default function Login() {
     const formData = { email, password };
 
     try {
-      await login(formData);
-      
-      navigate("/");
+      const res = await login(formData);
+      console.log('login', res.user);
+      if (res.user.Admin){
+        navigate("/admin");
+      } else{
+        navigate("/");
+      }
 
       console.log("Login successful.");
     } catch (error) {
@@ -88,9 +94,9 @@ export default function Login() {
             </div>
             <div className="mt-4 flex items-center justify-between">
               <span className="border-b w-1/5 md:w-1/4"></span>
-              <a href="/signup" className="text-xs text-gray-500 uppercase">
+              <Link to="/signup" className="text-xs text-gray-500 uppercase">
                 or sign up
-              </a>
+              </Link>
               <span className="border-b w-1/5 md:w-1/4"></span>
             </div>
           </div>

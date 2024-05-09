@@ -2,7 +2,7 @@ import "./App.css";
 import Popular from "./components/Popular";
 import Search from "./components/Search";
 import Login from "./components/Login";
-// import SignUp from "./components/SignUp";
+import Signup from "./components/Signup"
 import ProductDetail from "./components/ProductDetail";
 import Orders from "./components/Orders";
 import Cart from "./components/Cart";
@@ -16,20 +16,20 @@ function App() {
   return (
     <ProductProvider>
       <UserProvider>
-        <Admin />
-        {/* <BrowserRouter>
+        <BrowserRouter>
           <>
-            <Routes>
+          <Routes>
               <Route path="/" element={<Popular />} />
               <Route path="/search" element={<Search />} />
               <Route path="/login" element={<Login />} />
-              {/* <Route path="/signup" element={<SignUp />} /> */}
-              {/*</UserProvider><Route path="/productDetail" element={<ProductDetail />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/productDetail" element={<ProductDetail />} />
               <Route path="/orders" element={<Orders />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/admin/*" element={<Admin />} />
             </Routes>
           </>
-        </BrowserRouter> */}
+        </BrowserRouter>
       </UserProvider>
     </ProductProvider>
   );

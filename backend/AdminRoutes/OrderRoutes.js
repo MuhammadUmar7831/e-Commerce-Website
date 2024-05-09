@@ -4,10 +4,10 @@ const connection = require("../database");
 
 router.get('/allOrders', function (req, res) {
     const sql = `
-    SELECT Orders.ID , Orders.ProductId, Orders.Status, Orders.CustomerId AS OrderCustomerId, Orders.Date , Orders.Quantity, Orders.TotalBill, Product.Name AS ProductName, Customer.ID AS CustomerId, Customer.Name, Customer.Address, Customer.Contact
+    SELECT Orders.ID , Orders.ProductId, Orders.Status, Orders.CustomerId AS OrderCustomerId, Orders.Date , Orders.Quantity, Orders.TotalBill, Product.Name AS ProductName, User.ID AS CustomerId, User.Name, User.Address, User.Contact
     FROM Orders
     INNER JOIN Product ON Orders.ProductId = Product.ID
-    INNER JOIN Customer ON Orders.CustomerId = Customer.ID
+    INNER JOIN User ON Orders.CustomerId = User.ID
     WHERE Orders.Status IN ('pending', 'approved')`;
     connection.query(sql, (err, orders) => {
         if (err) {
@@ -27,10 +27,10 @@ router.put('/approveOrder/:id', function (req, res) {
         WHERE ID = ? AND Status = 'pending'
     `;
     const selectSql = `
-        SELECT Orders.*, Product.Name AS ProductName, Customer.*
+        SELECT Orders.*, Product.Name AS ProductName, User.*
         FROM Orders
         INNER JOIN Product ON Orders.ProductId = Product.ID
-        INNER JOIN Customer ON Orders.CustomerId = Customer.ID
+        INNER JOIN User ON Orders.CustomerId = User.ID
         WHERE Orders.ID = ?
     `;
     const checkQuantitySql = `
@@ -104,10 +104,10 @@ router.put('/completeOrder/:id', function (req, res) {
         WHERE ID = ? AND Status = 'approved'
     `;
     const selectSql = `
-        SELECT Orders.*, Product.Name AS ProductName, Customer.*
+        SELECT Orders.*, Product.Name AS ProductName, User.*
         FROM Orders
         INNER JOIN Product ON Orders.ProductId = Product.ID
-        INNER JOIN Customer ON Orders.CustomerId = Customer.ID
+        INNER JOIN User ON Orders.CustomerId = User.ID
         WHERE Orders.ID = ?
     `;
     connection.query(sql, [orderId], (err, result) => {
@@ -136,10 +136,10 @@ router.put('/rejectOrder/:id', function (req, res) {
     WHERE ID = ? AND Status IN ('pending', 'approved')
     `;
     const selectSql = `
-        SELECT Orders.*, Product.Name AS ProductName, Customer.*
+        SELECT Orders.*, Product.Name AS ProductName, User.*
         FROM Orders
         INNER JOIN Product ON Orders.ProductId = Product.ID
-        INNER JOIN Customer ON Orders.CustomerId = Customer.ID
+        INNER JOIN User ON Orders.CustomerId = User.ID
         WHERE Orders.ID = ?
     `;
     connection.query(sql, [orderId], (err, result) => {

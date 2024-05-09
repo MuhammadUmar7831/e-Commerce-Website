@@ -28,7 +28,7 @@ router.post("/addproduct", upload.single("image"), function (req, res) {
     req.body.pname,
     req.body.price,
     req.body.pdesc,
-    "images/" + req.file.filename, // Get the filename of the uploaded image
+    "/images/" + req.file.filename, // Get the filename of the uploaded image
   ];
 
   connection.query(sql, values, (err, result) => {
@@ -56,7 +56,7 @@ router.post("/updateproduct", upload.single("image"), function (req, res) {
   let values;
 
   if (req.file) {
-    const imageValues = "images/" + req.file.filename;
+    const imageValues = "/images/" + req.file.filename;
     sql = `UPDATE Product SET Name = ?, Price = ?, Description = ?, Image = ? WHERE ID = ?`;
     values = [pname, price, pdesc, imageValues, productId];
   } else {
@@ -74,7 +74,7 @@ router.post("/updateproduct", upload.single("image"), function (req, res) {
       Name: pname,
       Price: price,
       Description: pdesc,
-      Image: req.file ? "images/" + req.file.filename : null, // Set image only if uploaded
+      Image: req.file ? "/images/" + req.file.filename : null, // Set image only if uploaded
     };
     return res
       .status(200)

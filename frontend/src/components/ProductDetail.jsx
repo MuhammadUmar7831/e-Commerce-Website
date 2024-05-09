@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Header from "./Header";
 import OrderSummaryPopup from "./OrderSummaryPopup";
 import axios from "axios";
@@ -45,7 +45,6 @@ export default function ProductDetail() {
       );
 
       const userData = response.data;
-      console.log(userData);
       // Assuming userId is available in userData
       const requestBody = {
         customerEmail: userData.email,
@@ -64,7 +63,6 @@ export default function ProductDetail() {
         }
       );
 
-      console.log(addToCartResponse.data); // Log success message or handle response
       setAddToCartAlet(!addToCartAlet);
     } catch (error) {
       console.error(error);
@@ -82,6 +80,12 @@ export default function ProductDetail() {
     }
     setOrderSummaryModalOpen(true);
   };
+
+  useEffect(() => {
+    if (Object.keys(object).length === 0 && object.constructor === Object) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <>
@@ -148,21 +152,13 @@ export default function ProductDetail() {
       </div>
 
       <div className=" bg-white my-4">
-        {/* <button
-        type="button"
-        className="bg-zinc-500 hover:bg-zinc-300 mt-4 ml-3 text-white font-bold py-2 px-4 rounded"
-        onClick={onClick}
-      >
-        Back
-      </button> */}
-
         <div className="flex flex-col lg:flex-row w-4/6 m-auto h-4/6 shadow-2xl overflow-hidden rounded-lg">
-          <div className="lg:w-1/2 border-r border-gray-400 relative p-4">
-            <div className="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 opacity-15"></div>
+          <div className="lg:w-1/2 h-4/5 border-r border-gray-400 relative p-4">
+            <div className="flex hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 opacity-15"></div>
             <img
-              className="w-full h-full object-cover"
+              className="h-[400px] w-[400px] object-cover"
               src={object.image}
-              alt="Paella dish"
+              alt="Image"
             />
           </div>
           <div className="lg:w-1/2 flex flex-col justify-between">
@@ -201,21 +197,6 @@ export default function ProductDetail() {
               </div>
               <hr />
             </div>
-            {/* {isVisible && (
-              <>
-              
-                <hr />
-                <div
-                  className="my-6 text-center text-red-900 slideIn"
-                  style={{ animationDuration: "1.5s" }}
-                >
-                  We're sorry, but the quantity of items you're trying to order
-                  exceeds our current stock availability. Please adjust the
-                  quantity or consider selecting alternative products. Thank you
-                  for your understanding and continued support{" "}
-                </div>
-              </>
-            )} */}
             <div className="self-end m-4">
               <button
                 className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white text-lg font-bold py-2 px-4 transform -skew-x-12"
@@ -234,6 +215,7 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
+
       <OrderSummaryPopup
         open={orderSummaryModalOpen}
         handleClose={() => {

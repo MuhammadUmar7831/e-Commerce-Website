@@ -134,7 +134,11 @@ export default function Header() {
                     <AccountCircle
                       fontSize="large"
                       onClick={() => {
-                        navigate("/login");
+                        if (localStorage.getItem("auth-token")) {
+                          navigate("/login");
+                        } else{
+                          navigate("/signup");
+                        }
                       }}
                     />
                   </Badge>

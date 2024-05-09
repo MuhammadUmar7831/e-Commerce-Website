@@ -57,7 +57,7 @@ router.post(
       const hashedPassword = await bcrypt.hash(req.body.password, salt);
       // for admin
       const sql =
-        "INSERT INTO User(`Name`, `Email`, `Password`, `Address`, `Contact`,`Admin`) VALUES (?, ?, ?, ?, ?,'No')";
+        "INSERT INTO User(`Name`, `Email`, `Password`, `Address`, `Contact`,`Admin`) VALUES (?, ?, ?, ?, ?, 0)";
       const values = [
         req.body.name,
         req.body.email,
@@ -72,9 +72,18 @@ router.post(
           return res.status(500).json({ error: "Error during signup" });
         }
 
+        const PayLoad = {
+          user: {
+            email: req.body.email
+          }
+        };
+        const expirationTime = Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60;
+        // Sign the JWT token with the payload and expiration time
+        const token = jwt.sign({ ...PayLoad, exp: expirationTime }, jwtSecret);
+
         return res
           .status(200)
-          .json({ message: "User registered successfully" });
+          .json({ token, message: "User registered successfully" });
       });
     } catch (error) {
       console.error("Error during signup:", error);
@@ -99,11 +108,9 @@ router.post("/login", async (req, res) => {
     }
 
     const user = results[0];
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(user.Password, salt);
 
     try {
-      const passwordMatch = await bcrypt.compare(password, hashedPassword);
+      const passwordMatch = await bcrypt.compare(password, user.Password);
       if (passwordMatch) {
         const PayLoad = {
           user: {
@@ -115,12 +122,8 @@ router.post("/login", async (req, res) => {
         // Sign the JWT token with the payload and expiration time
         const token = jwt.sign({ ...PayLoad, exp: expirationTime }, jwtSecret);
 
-        const decoded = jwt.verify(token, jwtSecret);
 
-        // Extract user information from the decoded token
-        console.log(decoded.user);
-
-        return res.status(200).json({ token });
+        return res.status(200).json({ token, user });
       } else {
         return res.status(401).json({ error: "Invalid password" });
       }
@@ -447,16 +450,17 @@ router.post("/deleteCartItem", async function (req, res) {
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "Item not found in the cart" });
     }
-    return res.status(200).json({ success: true, message: "Cart item deleted successfully" });
+    return res
+      .status(200)
+      .json({ success: true, message: "Cart item deleted successfully" });
   });
 });
-
 
 // Import and use routes
 app.use("/", router);
 app.use("/Product", require("./AdminRoutes/ProductRoutes"));
 app.use("/Statistics", require("./AdminRoutes/StatisticsRoutes"));
-app.use('/Orders', require('./AdminRoutes/OrderRoutes'));
+app.use("/Orders", require("./AdminRoutes/OrderRoutes"));
 
 const port = 3000; // Choose any available port you prefer
 app.listen(port, () => {

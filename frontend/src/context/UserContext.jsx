@@ -15,15 +15,16 @@ const UserProvider = (props) => {
     });
 
     if (!response.ok) {
+      console.log(response.error)
       throw "Something went wrong";
     } else {
       const responseData = await response.json(); 
-      const { token, email } = responseData;
+      const { token, user } = responseData;
 
       localStorage.clear();
       localStorage.setItem("auth-token", token);
 
-      return token;
+      return {token, user};
     }
   };
 

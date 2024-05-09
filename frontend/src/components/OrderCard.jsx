@@ -42,12 +42,12 @@ export default function OrderCard(props) {
     <>
       {props.selectedOption == props.Status && (
         <div className="flex items-center justify-center my-4">
-          <div className="flex flex-col lg:flex-row w-5/6 m-2 rounded-md shadow-2xl shadow-gray-600 p-10">
-            <div className="lg:w-2/5 p-5 lg:border-r border-gray-400">
+          <div className="flex flex-col lg:flex-row w-5/6 m-2 rounded-md shadow-2xl shadow-gray-600">
+            <div className="w-2/5 h-2/5 p-5 my-auto lg:border-r border-gray-400 relative">
               <img
-                className="object-cover w-full h-full rounded-l-md"
+                className="w-[400px] h-[400px] object-cover"
                 src={props.image}
-                alt="...Loading!"
+                alt="Image"
               />
             </div>
             <hr />
@@ -111,7 +111,12 @@ export default function OrderCard(props) {
                   <button
                     className="font-bold text-lg rounded-xl bg-red-700 hover:bg-red-950 text-white text-center px-4 py-2"
                     onClick={() =>
-                      onclick(props.ID, props.CustomerId, props.ProductId, props.Status)
+                      onclick(
+                        props.ID,
+                        props.CustomerId,
+                        props.ProductId,
+                        props.Status
+                      )
                     }
                     type="button"
                   >
