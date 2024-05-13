@@ -12,15 +12,14 @@ export default function OrderCard(props) {
     try {
       if(value>0)
         {
-      console.log("pi ",props.ProductId);
-      console.log("pi ",value);
 
       // Make a POST request to the setRating endpoint
       const response = await axios.post('http://localhost:3000/setRating', {
         productId: props.ProductId, // Use productId from props
-        rating: value // Use rating value from state
+        rating: value, // Use rating value from state
+        orderId:props.ID
       });
-      console.log("count = ",props.count);
+      
       props.setcount(props.count+1);
       // Log the response or handle it as needed
       console.log(response.data);}
@@ -29,7 +28,7 @@ export default function OrderCard(props) {
       console.error('Error:', error.response.data);
     }
   };
-
+  
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };

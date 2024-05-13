@@ -454,65 +454,52 @@ router.post("/deleteCartItem", async function (req, res) {
       .json({ success: true, message: "Cart item deleted successfully" });
   });
 });
-
 router.post("/setRating", async function (req, res) {
-  const { productId, rating } = req.body;
-  console.log("pi ", productId);
+  const {orderId, productId, rating } = req.body;
+  
   // Check if productId and rating are provided
   if (!productId || !rating) {
     return res.status(400).json({ error: "productId and rating required" });
   }
   
   try {
-    // Get the current rating of the product
-    const getProductSql = "SELECT Rating FROM Product WHERE ID = ?";
-    connection.query(getProductSql, [productId], (err, productResult) => {
+    const ordersCountSql =
+      "SELECT COUNT(*) AS ordersCount, SUM(Review) AS ReviewSum FROM Orders WHERE ProductId = ? AND Review IS NOT NULL";
+  
+    connection.query(ordersCountSql, [productId], (err, ordersResult) => {
       if (err) {
         console.error(err);
         return res.status(500).json({ error: "Internal server error" });
       }
 
-      if (productResult.length === 0) {
-        return res.status(404).json({ error: "Product not found" });
+      const ordersCount = ordersResult[0].ordersCount+1;
+      const ReviewSum = ordersResult[0].ReviewSum;
+
+      // Calculate the new rating by adding the new rating to the current rating and dividing it by the orders count
+      let newRating = 0.0;
+      if (ordersCount <= 0||ReviewSum==null) {
+        newRating = rating;
+      } else {
+        newRating = (parseInt(ReviewSum) + parseInt(rating) )/ ordersCount;
       }
+
+
       
-      const currentRating = productResult[0].Rating;
-      
-      // Count the number of orders for the product where the rating is not null
-      const ordersCountSql =
-      "SELECT COUNT(*) AS ordersCount FROM Orders WHERE ProductId = ? AND Review IS NOT NULL";
-      connection.query(ordersCountSql, [productId], (err, ordersResult) => {
+      // Update the rating of the product
+      const updateRatingSql = "UPDATE Product SET Rating = ? WHERE ID = ?";
+      connection.query(updateRatingSql, [newRating, productId], (err) => {
         if (err) {
           console.error(err);
           return res.status(500).json({ error: "Internal server error" });
         }
-        
-        const ordersCount = ordersResult[0].ordersCount;
-        
-        // Calculate the new rating by adding the new rating to the current rating and dividing it by the orders count
-        let newRating = 0.0;
-        if (ordersCount <= 0) {
-          newRating = rating;
-        } else {
-          newRating = (currentRating + rating) / ordersCount;
-        }
-        
-        // Update the rating of the product
-        const updateRatingSql = "UPDATE Product SET Rating = ? WHERE ID = ?";
-        connection.query(updateRatingSql, [newRating, productId], (err) => {
+
+        const updateOrderReview =
+          "UPDATE Orders SET Review=? WHERE ProductId = ? AND ID=?";
+        connection.query(updateOrderReview, [rating, productId,orderId], (err) => {
           if (err) {
             console.error(err);
             return res.status(500).json({ error: "Internal server error" });
           }
-
-          const updateOrderReview =
-            "UPDATE Orders SET Review=? WHERE ProductId = ?";
-            connection.query(updateOrderReview, [rating, productId], (err) => {
-              if (err) {
-                console.error(err);
-                return res.status(500).json({ error: "Internal server error" });
-              }});
-
 
           return res
             .status(200)
@@ -524,6 +511,7 @@ router.post("/setRating", async function (req, res) {
     return res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 // Import and use routes
 app.use("/", router);
