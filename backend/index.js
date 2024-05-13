@@ -74,8 +74,8 @@ router.post(
 
         const PayLoad = {
           user: {
-            email: req.body.email
-          }
+            email: req.body.email,
+          },
         };
         const expirationTime = Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60;
         // Sign the JWT token with the payload and expiration time
@@ -121,7 +121,6 @@ router.post("/login", async (req, res) => {
         const expirationTime = Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60;
         // Sign the JWT token with the payload and expiration time
         const token = jwt.sign({ ...PayLoad, exp: expirationTime }, jwtSecret);
-
 
         return res.status(200).json({ token, user });
       } else {
@@ -456,6 +455,76 @@ router.post("/deleteCartItem", async function (req, res) {
   });
 });
 
+router.post("/setRating", async function (req, res) {
+  const { productId, rating } = req.body;
+  console.log("pi ", productId);
+  // Check if productId and rating are provided
+  if (!productId || !rating) {
+    return res.status(400).json({ error: "productId and rating required" });
+  }
+  
+  try {
+    // Get the current rating of the product
+    const getProductSql = "SELECT Rating FROM Product WHERE ID = ?";
+    connection.query(getProductSql, [productId], (err, productResult) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+
+      if (productResult.length === 0) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+      
+      const currentRating = productResult[0].Rating;
+      
+      // Count the number of orders for the product where the rating is not null
+      const ordersCountSql =
+      "SELECT COUNT(*) AS ordersCount FROM Orders WHERE ProductId = ? AND Review IS NOT NULL";
+      connection.query(ordersCountSql, [productId], (err, ordersResult) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ error: "Internal server error" });
+        }
+        
+        const ordersCount = ordersResult[0].ordersCount;
+        
+        // Calculate the new rating by adding the new rating to the current rating and dividing it by the orders count
+        let newRating = 0.0;
+        if (ordersCount <= 0) {
+          newRating = rating;
+        } else {
+          newRating = (currentRating + rating) / ordersCount;
+        }
+        
+        // Update the rating of the product
+        const updateRatingSql = "UPDATE Product SET Rating = ? WHERE ID = ?";
+        connection.query(updateRatingSql, [newRating, productId], (err) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
+          }
+
+          const updateOrderReview =
+            "UPDATE Orders SET Review=? WHERE ProductId = ?";
+            connection.query(updateOrderReview, [rating, productId], (err) => {
+              if (err) {
+                console.error(err);
+                return res.status(500).json({ error: "Internal server error" });
+              }});
+
+
+          return res
+            .status(200)
+            .json({ message: "Rating updated successfully", newRating });
+        });
+      });
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // Import and use routes
 app.use("/", router);
 app.use("/Product", require("./AdminRoutes/ProductRoutes"));
@@ -466,5 +535,4 @@ const port = 3000; // Choose any available port you prefer
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
 module.exports = router;

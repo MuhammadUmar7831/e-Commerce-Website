@@ -154,6 +154,7 @@ export default function Orders(props) {
           Status={order.Status}
           Quantity={order.OrderQuantity}
           TotalBill={order.TotalBill}
+          Review={order.Review}
           Description={order.Description}
           ProductId={order.ProductId}
           CustomerId={order.CustomerId}
