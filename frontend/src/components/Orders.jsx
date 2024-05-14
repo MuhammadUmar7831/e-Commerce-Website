@@ -4,22 +4,25 @@ import OrderCard from "./OrderCard";
 import Header from "./Header";
 import { UserContext } from "../context/UserContext";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import { Navigate, useNavigate } from "react-router-dom";
 export default function Orders(props) {
   const { host } = useContext(UserContext);
   const [currentOrders, setCurrentOrders] = useState([]);
   const [selectedOption, setSelectedOption] = useState("pending"); // Set 'pending' as default
   const [Open, setOpen] = useState(false);
   const [count, setcount] = useState(false);
+  const navigate=useNavigate();
   useEffect(() => {
     //props.setcarouseCheck(false);
+    const token = localStorage.getItem("auth-token");
+    if (!token) {
+      // Handle unauthorized user
+      navigate('/login');
+      return;
+    }
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("auth-token");
-        if (!token) {
-          // Handle unauthorized user
-          return;
-        }
+       
 
         const responseAuth = await axios.post(
           `${host}/auth`,
@@ -154,6 +157,7 @@ export default function Orders(props) {
           Status={order.Status}
           Quantity={order.OrderQuantity}
           TotalBill={order.TotalBill}
+          Review={order.Review}
           Description={order.Description}
           ProductId={order.ProductId}
           CustomerId={order.CustomerId}

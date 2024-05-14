@@ -4,6 +4,7 @@ import axios from "axios";
 import CartCard from "./CartCard";
 import Alert from "@mui/material/Alert";
 import Header from "./Header";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function Cart(props) {
   const [products, setProducts] = useState([]);
@@ -11,15 +12,16 @@ export default function Cart(props) {
   const { host } = useContext(ProductContext);
   const [placeOrderAlert, setPlaceOrderAlert] = useState(false);
   const [deleteAlert, setDeleteAlert] = useState(false);
-
+  const navigate=useNavigate();
   useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    if (!token) {
+      // Handle unauthorized user
+      navigate('/login');
+      return;
+    }
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("auth-token");
-        if (!token) {
-          console.log("User is not authenticated");
-          return;
-        }
         const responseAuth = await axios.post(
           `${host}/auth`,
           { token: token },

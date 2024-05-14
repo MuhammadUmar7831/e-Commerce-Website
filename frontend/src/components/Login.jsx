@@ -99,6 +99,13 @@ export default function Login() {
               </Link>
               <span className="border-b w-1/5 md:w-1/4"></span>
             </div>
+            <div className="mt-8">
+            <Link  to="/" 
+                className="bg-gray-700 text-white font-bold p-2 m-auto w-full rounded hover:bg-gray-600"
+              >
+                
+VISIT BAKENEST              </Link>
+            </div>
           </div>
         </div>
       </div>

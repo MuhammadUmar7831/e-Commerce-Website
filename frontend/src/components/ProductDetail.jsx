@@ -73,6 +73,12 @@ export default function ProductDetail() {
   const [orderSummaryModalOpen, setOrderSummaryModalOpen] = useState(false);
 
   const handleExpandClick1 = () => {
+    const token = localStorage.getItem("auth-token");
+    if (!token) {
+      // Handle unauthorized user
+      navigate('/login');
+      return;
+    }
     if (object.productQuantity < qty) {
       console.log(object.productQuantity, qty, isVisible);
       setIsVisible(!isVisible);
