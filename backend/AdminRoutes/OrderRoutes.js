@@ -8,7 +8,9 @@ router.get('/allOrders', function (req, res) {
     FROM Orders
     INNER JOIN Product ON Orders.ProductId = Product.ID
     INNER JOIN User ON Orders.CustomerId = User.ID
-    WHERE Orders.Status IN ('pending', 'approved')`;
+    WHERE Orders.Status IN ('pending', 'approved')
+    ORDER BY Orders.ID DESC
+    `;
     connection.query(sql, (err, orders) => {
         if (err) {
             console.error('Error fetching orders:', err);

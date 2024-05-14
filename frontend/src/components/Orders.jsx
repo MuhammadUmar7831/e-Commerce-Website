@@ -11,19 +11,18 @@ export default function Orders(props) {
   const [selectedOption, setSelectedOption] = useState("pending"); // Set 'pending' as default
   const [Open, setOpen] = useState(false);
   const [count, setcount] = useState(false);
-  const navigate=useNavigate();
+  const [loding, setLoding] = useState(true);
+  const navigate = useNavigate();
   useEffect(() => {
     //props.setcarouseCheck(false);
     const token = localStorage.getItem("auth-token");
     if (!token) {
       // Handle unauthorized user
-      navigate('/login');
+      navigate("/login");
       return;
     }
     const fetchData = async () => {
       try {
-       
-
         const responseAuth = await axios.post(
           `${host}/auth`,
           { token },
@@ -70,9 +69,26 @@ export default function Orders(props) {
         // Handle error
       }
     };
-
+    setLoding(false);
     fetchData();
   }, [count]);
+
+  function countOrdersByStatus() {
+    if (!currentOrders || !selectedOption) {
+      return 0;
+    }
+    return currentOrders.filter((order) => order.Status === selectedOption).length;
+  }
+
+
+  const [selectStatusOrdersCount, setSelectStatusOrdersCount] = useState(0);
+
+  useEffect(() => {
+    const val = countOrdersByStatus();
+    setSelectStatusOrdersCount(val);
+    console.log(val);
+  }, [selectedOption, currentOrders])
+  
 
   return (
     <>
@@ -142,10 +158,19 @@ export default function Orders(props) {
         </h1>
       )}
 
-      {!currentOrders.length && (
+      {loding && (
         <div className="flex justify-center my-4">
           <CircularProgress />
         </div>
+      )}
+      {selectStatusOrdersCount === 0 && (
+        <>
+          <div className="flex justify-center w-1/2 mx-auto my-10">
+            <p className="text-xl text-slate-600 font-semibold workSans">
+              No orders for {selectedOption} status
+            </p>
+          </div>
+        </>
       )}
 
       {currentOrders.map((order, index) => (

@@ -1,34 +1,37 @@
 import React, { useEffect, useState } from "react";
-import Rating from '@mui/material/Rating';
-import Box from '@mui/material/Box';
+import Rating from "@mui/material/Rating";
+import Box from "@mui/material/Box";
 import axios from "axios";
 
 export default function OrderCard(props) {
   const [value, setValue] = useState(0);
-
+  const [isFeedbackGiven, setIsFeedbackGiven] = useState(false);
 
   const setRating = async () => {
-
     try {
-      if(value>0)
-        {
+      if (value > 0) {
+        // Make a POST request to the setRating endpoint
+        const response = await axios.post("http://localhost:3000/setRating", {
+          productId: props.ProductId, // Use productId from props
+          rating: value, // Use rating value from state
+          orderId: props.ID,
+        });
 
-      // Make a POST request to the setRating endpoint
-      const response = await axios.post('http://localhost:3000/setRating', {
-        productId: props.ProductId, // Use productId from props
-        rating: value, // Use rating value from state
-        orderId:props.ID
-      });
-      
-      props.setcount(props.count+1);
-      // Log the response or handle it as needed
-      console.log(response.data);}
+        props.setcount(props.count + 1);
+
+        const timeout = await setTimeout(() => {
+          setIsFeedbackGiven(true);
+        }, 2000);
+        timeout();
+        setIsFeedbackGiven(false);
+        console.log(response.data);
+      }
     } catch (error) {
       // Log and handle errors
-      console.error('Error:', error.response.data);
+      console.error("Error:", error.response.data);
     }
   };
-  
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -135,19 +138,32 @@ export default function OrderCard(props) {
                 {" Rs. "}
                 {props.TotalBill}
               </p>
-              
-{(props.Status==="completed")&&(props.Review==null)&&(   <div className="flex text-lg">  <Box component="fieldset" mb={3} borderColor="transparent">
-<span className="font-semibold  mr-2">Rating: </span>  <Rating
-        name="simple-controlled"
-        value={value}
-        onChange={handleChange}
-      />
-     <button
-                className=" ml-3 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white text-lg font-bold py-2 px-4 transform -skew-x-12"
-                onClick={setRating}
-              >
-             SUBMIT
-              </button>    </Box></div>)}
+
+              {props.Status === "completed" && props.Review == null && (
+                <div className="flex text-lg">
+                  <Box component="fieldset" mb={3} borderColor="transparent">
+                    <span className="font-semibold  mr-2">Give Rating: </span>{" "}
+                    <Rating
+                      name="simple-controlled"
+                      value={value}
+                      onChange={handleChange}
+                    />
+                    <button
+                      className=" ml-3 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white text-lg font-bold py-2 px-4 transform -skew-x-12"
+                      onClick={setRating}
+                    >
+                      SUBMIT
+                    </button>{" "}
+                  </Box>
+                </div>
+              )}
+              {props.Status === "completed" && props.Review == null && isFeedbackGiven && (
+                <>
+                  <p className="my-2 text-green-900">
+                    Your feedback has been submitted. Thankyou!!
+                  </p>
+                </>
+              )}
               {(props.Status === "approved" || props.Status === "pending") && (
                 <div className="flex justify-end">
                   <button

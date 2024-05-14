@@ -49,7 +49,7 @@ export default function ProductCard(props) {
           className="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center"
         >
           <img src="/star.svg" alt="PKR Icon" className="w-5" />
-          <span className="ml-1 text-lg">{props.rating}</span>
+          <span className="ml-1 text-lg">{ Math.floor(props.rating * 10) / 10}</span>
         </span>
 
         <span

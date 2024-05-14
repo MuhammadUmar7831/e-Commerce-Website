@@ -4,6 +4,7 @@ import OrderSummaryPopup from "./OrderSummaryPopup";
 import axios from "axios";
 import { ProductContext } from "../context/ProductContext";
 import Alert from "@mui/material/Alert";
+import Rating from "@mui/material/Rating";
 import { useNavigate } from "react-router-dom";
 
 export default function ProductDetail() {
@@ -76,7 +77,7 @@ export default function ProductDetail() {
     const token = localStorage.getItem("auth-token");
     if (!token) {
       // Handle unauthorized user
-      navigate('/login');
+      navigate("/login");
       return;
     }
     if (object.productQuantity < qty) {
@@ -196,6 +197,16 @@ export default function ProductDetail() {
                     +
                   </button>
                 </div>
+              </div>
+              <h1 className="text-2xl">Rating</h1>
+              <div className="bg-rded-900 my-4 flex items-center">
+                <p className="text-2xl pr-4">{Math.floor(object.rating * 10) / 10}</p>
+                <Rating
+                  name="read-only"
+                  value={Math.floor(object.rating * 10) / 10}
+                  precision={0.1}
+                  readOnly
+                />
               </div>
               <div className="text-3xl mt-5">
                 Rs.{" "}

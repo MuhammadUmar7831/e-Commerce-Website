@@ -324,7 +324,7 @@ router.post("/getOrders", async (req, res) => {
       SELECT Orders.*, Product.*, Orders.ID AS OrderId, Product.Id AS ProductId, Orders.Quantity AS OrderQuantity
       FROM Orders
       JOIN Product ON Orders.ProductId = Product.ID
-      WHERE Orders.CustomerId = ?
+      WHERE Orders.CustomerId = ? ORDER BY Orders.ID DESC
     `;
 
     // Execute the SQL query with dynamic conditions

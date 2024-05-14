@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ManageProducts = () => {
   const host = "localhost:3000";
@@ -202,6 +203,15 @@ const ManageProducts = () => {
       reader.readAsDataURL(file);
     }
   };
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+  }, []);
 
   return (
     <>

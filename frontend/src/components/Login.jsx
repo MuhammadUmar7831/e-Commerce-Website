@@ -4,7 +4,6 @@ import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-
 import Alert from "@mui/material/Alert";
 
 export default function Login() {
@@ -22,10 +21,10 @@ export default function Login() {
 
     try {
       const res = await login(formData);
-      console.log('login', res.user);
-      if (res.user.Admin){
+      console.log("login", res.user);
+      if (res.user.Admin) {
         navigate("/admin");
-      } else{
+      } else {
         navigate("/");
       }
 
@@ -99,12 +98,13 @@ export default function Login() {
               </Link>
               <span className="border-b w-1/5 md:w-1/4"></span>
             </div>
-            <div className="mt-8">
-            <Link  to="/" 
-                className="bg-gray-700 text-white font-bold p-2 m-auto w-full rounded hover:bg-gray-600"
+            <div className="flex justify-center mt-5 bg-gray-700 text-white w-full p-2 rounded hover:bg-gray-600">
+              <Link
+                to="/"
+                className="w-full text-center"
               >
-                
-VISIT BAKENEST              </Link>
+                VISIT BAKENEST{" "}
+              </Link>
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@ import React from "react";
 import { useContext } from "react";
 import { ProductContext } from "../context/ProductContext";
 import OrderSummaryPopup from "./OrderSummaryPopup";
+import Rating from "@mui/material/Rating";
 
 import { useState } from "react";
 import axios from "axios";
@@ -74,6 +75,16 @@ function CartCard(props) {
                 Quantity: <span>{[props.product.cartQuantity]}</span>
               </p>
             </div>
+            <h1 className="text-2xl">Rating</h1>
+              <div className="bg-rded-900 my-4 flex items-center">
+                <p className="text-2xl pr-4">{Math.floor(props.product.Rating * 10) / 10}</p>
+                <Rating
+                  name="read-only"
+                  value={Math.floor(props.product.Rating * 10) / 10}
+                  precision={0.1}
+                  readOnly
+                />
+              </div>
             <div className="text-3xl my-5">
               Rs.{" "}
               <span className="text-amber-500 font-bold">

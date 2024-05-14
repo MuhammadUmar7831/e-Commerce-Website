@@ -8,8 +8,17 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { useNavigate } from "react-router-dom";
 
 export default function Statistics() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+  }, []);
 
   function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
