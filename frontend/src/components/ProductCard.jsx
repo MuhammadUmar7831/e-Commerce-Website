@@ -44,7 +44,7 @@ export default function ProductCard(props) {
           console.log("response.data.Admin ",response.data.Admin);
           if(response.data.Admin)
             {
-              navigate("/admin/*");
+              navigate("/admin");
               return;
             }
             setchecker(false);

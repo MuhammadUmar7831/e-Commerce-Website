@@ -47,7 +47,7 @@ export default function Cart(props) {
         );
         if(response.data.Admin)
           {
-            navigate("/admin/*");
+            navigate("/admin");
 return;
           }
           setchecker(true);

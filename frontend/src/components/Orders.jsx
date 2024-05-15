@@ -52,7 +52,7 @@ export default function Orders(props) {
         console.log("user",responseGeUser.data.Admin)
         if(responseGeUser.data.Admin)
           {
-            navigate("/admin/*");
+            navigate("/admin");
 return;
           }
           setchecker(true);
