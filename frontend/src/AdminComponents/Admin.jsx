@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState ,useContext,useEffect} from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
@@ -20,11 +21,14 @@ import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantity
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import Tooltip from "@mui/material/Tooltip";
-
+import { UserContext } from "../context/UserContext";
+import axios from 'axios';
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import ManageProducts from "./ManageProducts";
 import ManageOrders from "./ManageOrders";
 import Statistics from "./Statistics";
+import { useNavigate } from "react-router-dom";
+import Login from "../components/Login";
 
 const drawerWidth = 240;
 
@@ -94,6 +98,60 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function Admin() {
+  const handleLogout = () => {
+    localStorage.removeItem('auth-token'); // Remove the authentication token from local storage
+  };
+  const { host } = useContext(UserContext);
+  const navigate = useNavigate();
+  const [check,setchecker]=useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+
+    const fetchData = async () => {
+      try {
+        const responseAuth = await axios.post(
+          `${host}/auth`,
+          { token },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // Fetch user data
+        const responseGeUser = await axios.post(
+          `${host}/getUser`,
+          {
+            email: responseAuth.data.email,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+    if(!responseGeUser.data.Admin)
+      {
+        navigate("/");
+return;
+      }
+      setchecker(true);
+
+    } catch (error) {
+      console.error(error);
+      // Handle error
+    }}
+    fetchData();
+  }, []);
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -106,7 +164,7 @@ export default function Admin() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    check&&<Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -139,7 +197,7 @@ export default function Admin() {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Statistics", "Manage Products", "Manage Orders"].map(
+          {["Statistics", "Manage Products", "Manage Orders","LogOut"].map(
             (text, index) => (
               <ListItem key={text} disablePadding sx={{ display: "block" }}>
                 <IconButton
@@ -148,6 +206,7 @@ export default function Admin() {
                     justifyContent: open ? "initial" : "center",
                     px: 2.5,
                   }}
+                  onClick={index === 3 ? handleLogout : null}
                 >
                   <ListItemIcon
                     sx={{
@@ -173,6 +232,11 @@ export default function Admin() {
                         <Tooltip title="Manage Orders"><LocalShippingIcon />{" "}</Tooltip>
                       </Link>
                     )}
+                    {index == 3 && (
+                      <Link to="/login">
+                        <Tooltip title="LogOut"><ExitToAppIcon />{" "}</Tooltip>
+                      </Link>
+                    )}
                   </ListItemIcon>
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                 </IconButton>
@@ -185,7 +249,7 @@ export default function Admin() {
           <Routes>
             <Route path="/" element={<Statistics />} />
             <Route path="/manageProducts" element={<ManageProducts />} />
-            <Route path="/manageOrders" element={<ManageOrders />} />
+            <Route path="/manageOrders" element={<ManageOrders />} />         
           </Routes>
       </Box>
     </Box>

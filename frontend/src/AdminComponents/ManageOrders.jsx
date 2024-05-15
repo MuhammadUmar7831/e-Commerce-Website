@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
+import axios from "axios";
 
 const ManageOrders = (props) => {
+  const { host } = useContext(UserContext);
+  const [check,setchecker]=useState(false);
+
   const [orders, setOrders] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState(
@@ -11,15 +16,45 @@ const ManageOrders = (props) => {
   const navigate = useNavigate();
   useEffect(() => {
     fetchOrders();
-    const token = localStorage.getItem("auth-token");
-    if (!token) {
-      navigate("/login");
-      return;
-    }
   }, []);
 
   const fetchOrders = async () => {
-    try {
+    try { 
+      const token = localStorage.getItem("auth-token");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+      const responseAuth = await axios.post(
+      `${host}/auth`,
+      { token },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    // Fetch user data
+    const responseGeUser = await axios.post(
+      `${host}/getUser`,
+      {
+        email: responseAuth.data.email,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+if(!responseGeUser.data.Admin)
+  {
+    navigate("/");
+return;
+  }
+  setchecker(true);
+    
       const response = await fetch("http://localhost:3000/Orders/allOrders");
       if (!response.ok) {
         throw new Error("Failed to fetch orders");
@@ -44,6 +79,7 @@ const ManageOrders = (props) => {
 
       setOrders(formattedOrders);
       console.log(orders);
+      
     } catch (error) {
       console.error("Error fetching orders:", error);
       // Handle error, e.g., display an error message to the user
@@ -118,6 +154,7 @@ const ManageOrders = (props) => {
     }
   };
   return (
+    check&&
     <div>
       {showModal && (
         <div className="fixed z-50 inset-0 overflow-y-auto">

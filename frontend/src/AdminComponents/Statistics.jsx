@@ -2,15 +2,20 @@ import React, { useEffect, useState, useContext } from "react";
 import OrdersByProduct from "./OrdersByProduct";
 import OrdersByCustomer from "./OrdersByCustomer";
 import AllOrders from "./AllOrders";
-
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
+import axios from 'axios'
 
 export default function Statistics() {
+  const { host } = useContext(UserContext);
+
+  const [check,setchecker]=useState(false);
+
   const navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
@@ -18,6 +23,45 @@ export default function Statistics() {
       navigate("/login");
       return;
     }
+
+
+    const fetchData = async () => {
+      try {
+        const responseAuth = await axios.post(
+          `${host}/auth`,
+          { token },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // Fetch user data
+        const responseGeUser = await axios.post(
+          `${host}/getUser`,
+          {
+            email: responseAuth.data.email,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+    if(!responseGeUser.data.Admin)
+      {
+        navigate("/");
+return;
+      }
+      setchecker(true);
+
+    } catch (error) {
+      console.error(error);
+      // Handle error
+    }}
+    fetchData();
   }, []);
 
   function CustomTabPanel(props) {
@@ -60,6 +104,7 @@ export default function Statistics() {
   };
 
   return (
+    check&&
     <>
       <div className="mx-4">
         <h5 className="text-4xl mt-4">Statistics</h5>

@@ -12,6 +12,8 @@ export default function Orders(props) {
   const [Open, setOpen] = useState(false);
   const [count, setcount] = useState(false);
   const [loding, setLoding] = useState(true);
+  const [check,setchecker]=useState(false);
+
   const navigate = useNavigate();
   useEffect(() => {
     //props.setcarouseCheck(false);
@@ -47,6 +49,14 @@ export default function Orders(props) {
         );
 
         const userData = responseGeUser.data;
+        console.log("user",responseGeUser.data.Admin)
+        if(responseGeUser.data.Admin)
+          {
+            navigate("/admin/*");
+return;
+          }
+          setchecker(true);
+
         // Assuming userId is available in userData
         const requestBody = {
           customerId: userData.ID,
@@ -91,6 +101,7 @@ export default function Orders(props) {
   
 
   return (
+    check && (
     <>
       <Header />
       <div className="mx-4">
@@ -194,6 +205,6 @@ export default function Orders(props) {
           count={count}
         />
       ))}
-    </>
+    </>)
   );
 }

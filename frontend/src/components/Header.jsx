@@ -17,6 +17,8 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { UserContext } from "../context/UserContext";
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+
 import { useState } from "react";
 
 const white = "#C5AA6A";
@@ -207,7 +209,16 @@ export default function Header() {
                       }
                     }}
                   />
-                </IconButton>
+                                  </IconButton>
+<IconButton>
+                  <ExitToAppIcon
+                       fontSize="large"
+                         onClick={() => {
+                          localStorage.removeItem("auth-token")
+                            navigate("/login");
+                        }}
+                  ></ExitToAppIcon>
+                  </IconButton>
               </Box>
             </Toolbar>
           </AppBar>

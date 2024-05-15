@@ -7,6 +7,7 @@ import Header from "./Header";
 import { Navigate, useNavigate } from "react-router-dom";
 
 export default function Cart(props) {
+  const [check,setchecker]=useState(false);
   const [products, setProducts] = useState([]);
   const [customerId, setcustomerId] = useState();
   const { host } = useContext(ProductContext);
@@ -44,6 +45,14 @@ export default function Cart(props) {
             },
           }
         );
+        if(response.data.Admin)
+          {
+            navigate("/admin/*");
+return;
+          }
+          setchecker(true);
+
+        // A
         const userData = response.data;
         // Assuming userId is available in userData
         const requestBody = {
@@ -76,6 +85,7 @@ export default function Cart(props) {
   }, [products.length, placeOrderAlert, deleteAlert]);
 
   return (
+    check&&(
     <>
       <Header />
       <div className="mb-4">
@@ -153,6 +163,6 @@ export default function Cart(props) {
           />
         ))}
       </div>
-    </>
+    </>)
   );
 }

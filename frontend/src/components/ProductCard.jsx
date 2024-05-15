@@ -1,12 +1,60 @@
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import { ProductContext } from "../context/ProductContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UserContext } from "../context/UserContext";
 
 export default function ProductCard(props) {
+  const { host } = useContext(UserContext);
+
   const navigate = useNavigate();
   const {setObject} = useContext(ProductContext);
+  const [check,setchecker]=useState(true);
+
+  const handleClick = async() => {
+      const token = localStorage.getItem("auth-token");
+      if (!token) {
+        // Handle unauthorized user
+        navigate('/login');
+        return;
+      }
+        try {
+          const responseAuth = await axios.post(
+            `${host}/auth`,
+            { token: token },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log(responseAuth.data);
+          // Fetch user data
+          const response = await axios.post(
+            `${host}/getUser`,
+            {
+              email: responseAuth.data.email,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log("response.data.Admin ",response.data.Admin);
+          if(response.data.Admin)
+            {
+              navigate("/admin/*");
+              return;
+            }
+            setchecker(false);
+        
+        } catch (error) {
+          console.error(error);
+          // Handle error
+        }
   
-  const handleClick = () => {
+
     setObject({
       "productId" : props.id,
       "image": props.image,
@@ -20,6 +68,7 @@ export default function ProductCard(props) {
   };
 
   return (
+    check && (
     <div
       className="rounded overflow-hidden shadow-lg flex flex-col m-2"
       onClick={handleClick}
@@ -59,6 +108,6 @@ export default function ProductCard(props) {
           <span className="ml-1 text-xl font-bold">{props.price}</span>
         </span>
       </div>
-    </div>
+    </div>)
   );
 }

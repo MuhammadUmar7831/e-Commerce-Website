@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useContext} from "react";
 import { useNavigate } from "react-router-dom";
-
+import { UserContext } from "../context/UserContext";
+import axios from "axios";
 const ManageProducts = () => {
-  const host = "localhost:3000";
+  const { host } = useContext(UserContext);
+
+  const [check,setchecker]=useState(false);
+
+  const host1 = "localhost:3000";
   const [showModal, setShowModal] = useState(false);
   const [Name, setName] = useState("");
   const [Price, setPrice] = useState("");
@@ -37,7 +42,7 @@ const ManageProducts = () => {
   const deleteProduct = async (id) => {
     try {
       const response = await fetch(
-        `http://${host}/Product/deleteProduct/${id}`,
+        `http://${host1}/Product/deleteProduct/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -57,13 +62,51 @@ const ManageProducts = () => {
   };
   useEffect(() => {
     const fetchData = async () => {
+      const token = localStorage.getItem("auth-token");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+      console.log("token", token)
       try {
-        const response = await fetch(`http://${host}/Product/allProducts`);
-        if (!response.ok) {
+        const response = await fetch(`http://${host1}/Product/allProducts`);
+        if (!response.ok) 
           throw new Error("Failed to fetch products");
-        }
+          
         const data = await response.json();
         setProducts(data);
+
+        const responseAuth = await axios.post(
+          `${host}/auth`,
+          { token },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // Fetch user data
+        const responseGeUser = await axios.post(
+          `${host}/getUser`,
+          {
+            email: responseAuth.data.email,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+    if(!responseGeUser.data.Admin)
+      {
+        navigate("/");
+return;
+      }
+      setchecker(true);
+        
+
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -105,7 +148,7 @@ const ManageProducts = () => {
       formData.append("pdesc", Description);
       formData.append("image", image); // Append the image file to FormData
 
-      const response = await fetch(`http://${host}/Product/addproduct`, {
+      const response = await fetch(`http://${host1}/Product/addproduct`, {
         method: "POST",
         body: formData, // Use FormData instead of JSON.stringify(productData)
       });
@@ -156,7 +199,7 @@ const ManageProducts = () => {
       formData.append("pdesc", updatedDescription);
       formData.append("image", image); // Append the new image file to FormData
       console.log(formData);
-      const response = await fetch(`http://${host}/Product/updateProduct`, {
+      const response = await fetch(`http://${host1}/Product/updateProduct`, {
         method: "POST",
         body: formData,
       });
@@ -214,6 +257,7 @@ const ManageProducts = () => {
   }, []);
 
   return (
+    check&&
     <>
       {/* Button to open the modal */}
       <div className="fixed bottom-10 right-10 z-40">
