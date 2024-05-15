@@ -28,8 +28,10 @@ const UserProvider = (props) => {
     }
   };
 
+  const [cartCount, setCartCount] = useState(0);
+
   return (
-    <UserContext.Provider value={{ login, host }}>
+    <UserContext.Provider value={{ login, host, cartCount, setCartCount }}>
       {props.children}
     </UserContext.Provider>
   );

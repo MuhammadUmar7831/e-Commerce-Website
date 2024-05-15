@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 export default function OrderSummaryPopup(props) {
   const navigate = useNavigate();
+  const { cartCount, setCartCount } = useContext(UserContext);
 
   const placeOrder = async () => {
     try {
@@ -54,7 +56,7 @@ export default function OrderSummaryPopup(props) {
           `${props.host}/deleteCartItem`,
           {
             customerId: customerId,
-            "productId": props.productId,
+            productId: props.productId,
           },
           {
             headers: {
@@ -62,7 +64,7 @@ export default function OrderSummaryPopup(props) {
             },
           }
         );
-
+        setCartCount(cartCount - 1);
       }
 
       await axios.post(`${props.host}/placeOrder`, requestBody, {

@@ -6,9 +6,11 @@ import { ProductContext } from "../context/ProductContext";
 import Alert from "@mui/material/Alert";
 import Rating from "@mui/material/Rating";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 export default function ProductDetail() {
   const { object, host } = useContext(ProductContext);
+  const {cartCount, setCartCount} = useContext(UserContext)
   const [qty, setQty] = useState(1);
   const [isVisible, setIsVisible] = useState(false);
   const [addToCartAlet, setAddToCartAlet] = useState(false);
@@ -65,6 +67,7 @@ export default function ProductDetail() {
       );
 
       setAddToCartAlet(!addToCartAlet);
+      setCartCount(cartCount + 1);
     } catch (error) {
       console.error(error);
       // Handle error

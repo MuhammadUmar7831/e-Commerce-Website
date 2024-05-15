@@ -103,9 +103,16 @@ export default function Search() {
       <Header />
       <Carousel />
       <div className="mx-4">
-        <h5 className="text-4xl mt-4">
-          {filteredProducts.length} Result(s) for "{searchQuery}"
-        </h5>
+        {filteredProducts.length !== 0 && (
+          <h5 className="text-4xl mt-4">
+            {filteredProducts.length} Result(s) for "{searchQuery}"
+          </h5>
+        )}
+        {filteredProducts.length === 0 && (
+          <h5 className="text-4xl mt-4">
+            No Result(s) found
+          </h5>
+        )}
         <hr className="h-px my-6 mx-auto bg-gray-400 border-0 dark:bg-gray-700" />
       </div>
 

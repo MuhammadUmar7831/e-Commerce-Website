@@ -34,6 +34,7 @@ const ProductProvider = (props) => {
   const getProductsBySearch = async () => {
     try {
       const url = `${host}/search?q=${encodeURIComponent(searchQuery)}`;
+      console.log(url);
 
       const response = await fetch(url, {
         method: "GET",

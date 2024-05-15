@@ -3,8 +3,8 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProductContext } from "../context/ProductContext";
 import Navbar from "./Navbar";
+import axios from "axios";
 
-// material ui components
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -16,6 +16,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { UserContext } from "../context/UserContext";
+import { useState } from "react";
 
 const white = "#C5AA6A";
 
@@ -67,12 +69,68 @@ export default function Header() {
   const search = async () => {
     try {
       const response = await getProductsBySearch();
-      setSearchResult(response.product); // Accessing the product array
+      setSearchResult(response.product);
       navigate("/search");
     } catch (error) {
-      console.error(error); // Handle error if any
+      console.error(error);
     }
   };
+
+  const { host, cartCount, setCartCount } = useContext(UserContext);
+
+  const fetchData = async () => {
+    const token = localStorage.getItem("auth-token");
+    if (!token) {
+      return;
+    }
+
+    try {
+      const responseAuth = await axios.post(
+        `${host}/auth`,
+        { token: token },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(responseAuth.data);
+      // Fetch user data
+      const response = await axios.post(
+        `${host}/getUser`,
+        {
+          email: responseAuth.data.email,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const userData = response.data;
+
+      const requestBody = {
+        customerId: userData.ID,
+      };
+
+      const getCartResponse = await axios.post(
+        `${host}/getCartItem`,
+        requestBody,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setCartCount(getCartResponse.data.cartResult.length);
+      console.log(getCartResponse.data.cartResult.length);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  React.useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -117,8 +175,17 @@ export default function Header() {
                   // onClick={handleProfileMenuOpen}
                   color="inherit"
                 >
-                  <Badge badgeContent={17} color="error">
-                    <ShoppingCartIcon fontSize="large" />
+                  <Badge badgeContent={cartCount} color="error">
+                    <ShoppingCartIcon
+                      fontSize="large"
+                      onClick={() => {
+                        if (localStorage.getItem("auth-token")) {
+                          navigate("/cart");
+                        } else {
+                          navigate("/login");
+                        }
+                      }}
+                    />
                   </Badge>
                 </IconButton>
                 <IconButton
@@ -130,18 +197,16 @@ export default function Header() {
                   // onClick={handleProfileMenuOpen}
                   color="inherit"
                 >
-                  <Badge badgeContent={"1"} color="error">
-                    <AccountCircle
-                      fontSize="large"
-                      onClick={() => {
-                        if (localStorage.getItem("auth-token")) {
-                          navigate("/login");
-                        } else{
-                          navigate("/signup");
-                        }
-                      }}
-                    />
-                  </Badge>
+                  <AccountCircle
+                    fontSize="large"
+                    onClick={() => {
+                      if (localStorage.getItem("auth-token")) {
+                        navigate("/login");
+                      } else {
+                        navigate("/signup");
+                      }
+                    }}
+                  />
                 </IconButton>
               </Box>
             </Toolbar>
