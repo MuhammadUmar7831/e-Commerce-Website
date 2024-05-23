@@ -85,13 +85,13 @@ export default function OrderCard(props) {
             </div>
             <hr />
             <div className="lg:w-3/5 p-8">
-              <h1 className="text-2xl mb-4">
+              {/* <h1 className="text-2xl mb-4">
                 Order Id <span className="font-bold">{props.ID}</span>
-              </h1>
-              <p className="text-lg mb-4">
-                <span className="font-semibold  mr-2">Product Name:</span>
+              </h1> */}
+              <h1 className="text-4xl font-semibold mb-4 ">
+                {/* <span className="font-semibold  mr-2">Product Name:</span> */}
                 {props.Product}
-              </p>
+              </h1>
               <p className="text-lg mb-4">
                 <span className="font-semibold  mr-2">Description:</span>
                 {props.Description}
