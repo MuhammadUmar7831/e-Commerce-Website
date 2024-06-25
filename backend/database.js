@@ -6,7 +6,7 @@ function connectToDatabase() {
     host: 'mysql-e3a7385-mu8494759-744f.a.aivencloud.com',
     port: 27674,
     user: 'avnadmin',
-    password: 'AVNS0txvLOBA7WGArsaXV7U',
+    password: 'U',
     database: 'defaultdb'
   });
 
